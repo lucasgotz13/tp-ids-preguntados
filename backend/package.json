@@ -1,0 +1,11 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "paquete json para el uso de la api",
+  "main": "src/api.js",
+  "scripts": {
+    "dev": "nodemon src/api.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
