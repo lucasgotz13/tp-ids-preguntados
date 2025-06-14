@@ -12,3 +12,12 @@ CREATE TABLE preguntas (
     dificultad VARCHAR(50), 
     categoria VARCHAR(50), 
     puntos INT );
+
+create table respuestas (
+    id SERIAL PRIMARY KEY, 
+    respuesta_a VARCHAR(255), 
+    respuesta_b VARCHAR(255),
+    respuesta_c VARCHAR(255), 
+    respuesta_correcta varchar(255) 
+    id_pregunta INT REFERENCES preguntas(id) 
+     );
