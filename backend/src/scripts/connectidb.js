@@ -8,14 +8,16 @@ const dbClient = new Pool({
     database: "preguntados",
 });
 
-async function getAllPreguntas() {
-    const response = await dbClient.query("SELECT * FROM preguntas");
+async function getAllPreguntasRespuestas() {
+    const response = await dbClient.query(
+        "SELECT * FROM preguntas, respuestas where preguntas.id = respuestas.id_pregunta"
+    );
     return response.rows;
 }
 
-async function getPreguntaById(id) {
+async function getPreguntaRespuestaById(id) {
     const response = await dbClient.query(
-        "SELECT * FROM preguntas WHERE id = $1",
+        "SELECT * FROM preguntas, respuestas where preguntas.id = $1 AND respuestas.id_pregunta = $1",
         [id]
     );
 
@@ -23,7 +25,7 @@ async function getPreguntaById(id) {
 }
 
 async function createPregunta(pregunta, dificultad, categoria, puntos) {
-    dbClient.query(
+    await dbClient.query(
         "INSERT INTO preguntas (pregunta, dificultad, categoria, puntos) VALUES ($1, $2, $3, $4)",
         [pregunta, dificultad, categoria, puntos]
     );
@@ -34,6 +36,14 @@ async function updatePregunta(id, pregunta, dificultad, categoria, puntos) {
         "UPDATE preguntas SET pregunta = $2, dificultad = $3, categoria = $4, puntos = $5 WHERE id = $1",
         [id, pregunta, dificultad, categoria, puntos]
     );
+}
+
+async function getIdFromPregunta(pregunta) {
+    const response = await dbClient.query(
+        "SELECT id FROM preguntas WHERE preguntas.pregunta = $1",
+        [pregunta]
+    );
+    return response.rows;
 }
 async function getOneUser(id) {
     const response = await dbClient.query(
@@ -75,8 +85,7 @@ async function getOneRespuesta(id) {
 }
 
 module.exports = {
-    getAllPreguntas,
-    getPreguntaById,
+    getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
     getOneUser,
@@ -84,4 +93,6 @@ module.exports = {
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
+    getAllPreguntasRespuestas,
+    getIdFromPregunta,
 };

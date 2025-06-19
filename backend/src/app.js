@@ -7,8 +7,7 @@ const port = 3030;
 app.use(express.json());
 
 const {
-    getAllPreguntas,
-    getPreguntaById,
+    getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
     getOneUser,
@@ -16,11 +15,13 @@ const {
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
+    getAllPreguntasRespuestas,
+    getIdFromPregunta,
 } = require("./scripts/connectidb.js");
 
-// Obtener todas las preguntas
+// Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
 app.get("/api/preguntas/", async (req, res) => {
-    const response = await getAllPreguntas();
+    const response = await getAllPreguntasRespuestas();
     if (response === 0) {
         return res.status(404).json("No hay preguntas");
     }
@@ -29,7 +30,7 @@ app.get("/api/preguntas/", async (req, res) => {
 
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
-    const response = await getPreguntaById(req.params.id);
+    const response = await getPreguntaRespuestaById(req.params.id);
     if (response.length === 0) {
         return res.status(404).json("La pregunta no fue encontrada");
     }
@@ -40,18 +41,26 @@ app.get("/api/preguntas/:id", async (req, res) => {
 /*curl --header "Content-Type: application/json" \
   --request POST \ 
   --data '{"pregunta":"Como se llama el profe de la catedra?","dificultad":"facil", 
-  "categoria" : "fiuba", "puntos": "10"}' \
+  "categoria" : "fiuba", "puntos": "10"}' \ 
   http://localhost:3030/api/preguntas/  */
+// TODO: Expandir con las respuestas
 
-// Crear una pregunta
+// Crear una pregunta y la respuesta
 app.post("/api/preguntas/", async (req, res) => {
     if (
         req.body.pregunta == null ||
         req.body.dificultad == null ||
         req.body.categoria == null ||
-        req.body.puntos == null
+        req.body.puntos == null ||
+        req.body.respuesta_a == null ||
+        req.body.respuesta_b == null ||
+        req.body.respuesta_c == null ||
+        req.body.respuesta_correcta == null ||
+        req.body.id_pregunta == null
     ) {
-        return res.status(400).send("Faltan datos para crear la pregunta");
+        return res
+            .status(400)
+            .send("Faltan datos para crear la pregunta o la respuesta");
     }
 
     try {
@@ -61,6 +70,14 @@ app.post("/api/preguntas/", async (req, res) => {
             req.body.categoria,
             req.body.puntos
         );
+        const response = await getIdFromPregunta(req.body.pregunta);
+        await createRespuesta(
+            response[0].id,
+            req.body.respuesta_a,
+            req.body.respuesta_b,
+            req.body.respuesta_c,
+            req.body.respuesta_correcta
+        );
 
         return res.status(201).json({
             status: true,
@@ -69,7 +86,7 @@ app.post("/api/preguntas/", async (req, res) => {
     } catch {
         return res
             .status(400)
-            .json({ status: true, mensaje: "No se pudo crear la pregunta" });
+            .json({ status: false, mensaje: "No se pudo crear la pregunta" });
     }
 });
 
@@ -100,38 +117,6 @@ app.get("/api/respuestas/:id", async (req, res) => {
   --data '{"id_pregunta":"1","respuesta_a":"Manuel Bilbao", "respuesta_b":"Nico Riedel",
   "respuesta_c" : "La peke", "respuesta_correcta": "Manuel Camejo"}' \
   http://localhost:3030/api/respuestas/  */
-
-// crear respuestas de pregunta
-app.post("/api/respuestas/", async (req, res) => {
-    if (
-        req.body.id_pregunta == null ||
-        req.body.respuesta_a == null ||
-        req.body.respuesta_b == null ||
-        req.body.respuesta_c == null ||
-        req.body.respuesta_correcta == null
-    ) {
-        return res.status(400).send("Faltan datos para crear la respuesta");
-    }
-
-    try {
-        await createRespuesta(
-            req.body.id_pregunta,
-            req.body.respuesta_a,
-            req.body.respuesta_b,
-            req.body.respuesta_c,
-            req.body.respuesta_correcta
-        );
-
-        return res.status(201).json({
-            status: true,
-            mensaje: "Respuesta creada exitosamente",
-        });
-    } catch {
-        return res
-            .status(400)
-            .json({ status: true, mensaje: "No se pudo crear la respuesta" });
-    }
-});
 
 // Modificar la pregunta
 app.put("/api/preguntas/:id", async (req, res) => {
