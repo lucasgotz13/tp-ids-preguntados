@@ -15,11 +15,6 @@ async function getAllPreguntasRespuestas() {
     return response.rows;
 }
 
-async function getAllPreguntas() {
-    const response = await dbClient.query("SELECT * FROM preguntas");
-    return response.rows;
-}
-
 async function getPreguntaRespuestaById(id) {
     const response = await dbClient.query(
         "SELECT * FROM preguntas, respuestas where preguntas.id = $1 AND respuestas.id_pregunta = $1",
@@ -30,7 +25,7 @@ async function getPreguntaRespuestaById(id) {
 }
 
 async function createPregunta(pregunta, dificultad, categoria, puntos) {
-    dbClient.query(
+    await dbClient.query(
         "INSERT INTO preguntas (pregunta, dificultad, categoria, puntos) VALUES ($1, $2, $3, $4)",
         [pregunta, dificultad, categoria, puntos]
     );
@@ -41,6 +36,14 @@ async function updatePregunta(id, pregunta, dificultad, categoria, puntos) {
         "UPDATE preguntas SET pregunta = $2, dificultad = $3, categoria = $4, puntos = $5 WHERE id = $1",
         [id, pregunta, dificultad, categoria, puntos]
     );
+}
+
+async function getIdFromPregunta(pregunta) {
+    const response = await dbClient.query(
+        "SELECT id FROM preguntas WHERE preguntas.pregunta = $1",
+        [pregunta]
+    );
+    return response.rows;
 }
 async function getOneUser(id) {
     const response = await dbClient.query(
@@ -82,7 +85,6 @@ async function getOneRespuesta(id) {
 }
 
 module.exports = {
-    getAllPreguntas,
     getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
@@ -92,4 +94,5 @@ module.exports = {
     getAllRespuestas,
     getOneRespuesta,
     getAllPreguntasRespuestas,
+    getIdFromPregunta,
 };
