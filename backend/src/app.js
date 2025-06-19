@@ -8,7 +8,7 @@ app.use(express.json());
 
 const {
     getAllPreguntas,
-    getPreguntaById,
+    getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
     getOneUser,
@@ -16,11 +16,12 @@ const {
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
+    getAllPreguntasRespuestas,
 } = require("./scripts/connectidb.js");
 
-// Obtener todas las preguntas
+// Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
 app.get("/api/preguntas/", async (req, res) => {
-    const response = await getAllPreguntas();
+    const response = await getAllPreguntasRespuestas();
     if (response === 0) {
         return res.status(404).json("No hay preguntas");
     }
@@ -29,7 +30,7 @@ app.get("/api/preguntas/", async (req, res) => {
 
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
-    const response = await getPreguntaById(req.params.id);
+    const response = await getPreguntaRespuestaById(req.params.id);
     if (response.length === 0) {
         return res.status(404).json("La pregunta no fue encontrada");
     }

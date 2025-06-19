@@ -8,14 +8,21 @@ const dbClient = new Pool({
     database: "preguntados",
 });
 
+async function getAllPreguntasRespuestas() {
+    const response = await dbClient.query(
+        "SELECT * FROM preguntas, respuestas where preguntas.id = respuestas.id_pregunta"
+    );
+    return response.rows;
+}
+
 async function getAllPreguntas() {
     const response = await dbClient.query("SELECT * FROM preguntas");
     return response.rows;
 }
 
-async function getPreguntaById(id) {
+async function getPreguntaRespuestaById(id) {
     const response = await dbClient.query(
-        "SELECT * FROM preguntas WHERE id = $1",
+        "SELECT * FROM preguntas, respuestas where preguntas.id = $1 AND respuestas.id_pregunta = $1",
         [id]
     );
 
@@ -76,7 +83,7 @@ async function getOneRespuesta(id) {
 
 module.exports = {
     getAllPreguntas,
-    getPreguntaById,
+    getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
     getOneUser,
@@ -84,4 +91,5 @@ module.exports = {
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
+    getAllPreguntasRespuestas,
 };
