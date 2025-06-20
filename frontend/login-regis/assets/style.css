@@ -19,7 +19,7 @@ body{
     text-align: center; 
     color: var(--primary-color);
     margin-top: 20px; 
-    margin-bottom: 30px; 
+    margin-bottom: 40px; 
     padding: 15px 20px; 
     background-color: rgba(253, 255, 255, 0.952);  
     border-radius: 8px; 
@@ -35,7 +35,7 @@ body{
 
 .formulario {
     position: absolute;
-    top: 60%;
+    top: 62%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
