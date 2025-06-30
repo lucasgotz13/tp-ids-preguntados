@@ -23,7 +23,10 @@ const {
 app.get("/api/preguntas/", async (req, res) => {
     const response = await getAllPreguntasRespuestas();
     if (response === 0) {
-        return res.status(404).json("No hay preguntas");
+        return res.status(404).json({
+            status: false,
+            mensaje: "No hay preguntas",
+        });
     }
     res.status(200).json(response);
 });
@@ -32,7 +35,10 @@ app.get("/api/preguntas/", async (req, res) => {
 app.get("/api/preguntas/:id", async (req, res) => {
     const response = await getPreguntaRespuestaById(req.params.id);
     if (response.length === 0) {
-        return res.status(404).json("La pregunta no fue encontrada");
+        return res.status(404).json({
+            status: false,
+            mensaje: "La pregunta no fue encontrada",
+        });
     }
 
     return res.status(200).json(response);
@@ -40,10 +46,10 @@ app.get("/api/preguntas/:id", async (req, res) => {
 
 /*curl --header "Content-Type: application/json" \
   --request POST \ 
-  --data '{"pregunta":"Como se llama el profe de la catedra?","dificultad":"facil", 
-  "categoria" : "fiuba", "puntos": "10"}' \ 
+  --data '{"pregunta":"¿Quién fue el último campeon del mundo de fútbol?","dificultad":"facil", 
+  "categoria" : "deportes", "puntos": "10", "respuesta_a": "Brasil", "respuesta_b": "Argentina", "respuesta_c": "Francia", "respuesta_correcta": "b"
+  ' \ 
   http://localhost:3030/api/preguntas/  */
-// TODO: Expandir con las respuestas
 
 // Crear una pregunta y la respuesta
 app.post("/api/preguntas/", async (req, res) => {
@@ -55,12 +61,14 @@ app.post("/api/preguntas/", async (req, res) => {
         req.body.respuesta_a == null ||
         req.body.respuesta_b == null ||
         req.body.respuesta_c == null ||
-        req.body.respuesta_correcta == null ||
-        req.body.id_pregunta == null
+        req.body.respuesta_correcta == null
     ) {
         return res
             .status(400)
-            .send("Faltan datos para crear la pregunta o la respuesta");
+            .json({
+                status: false,
+                mensaje: "Faltan datos para crear la pregunta o la respuesta",
+            });
     }
 
     try {
@@ -95,7 +103,10 @@ app.get("/api/respuestas/", async (req, res) => {
     const response = await getAllRespuestas();
 
     if (response.length === 0) {
-        return res.status(404).json("No hay respuestas");
+        return res.status(404).json({
+            status: false,
+            mensaje: "No hay respuestas",
+        });
     }
 
     return res.status(200).json(response);
@@ -106,7 +117,10 @@ app.get("/api/respuestas/:id", async (req, res) => {
     const response = await getOneRespuesta(req.params.id);
 
     if (response.length === 0) {
-        return res.status(404).json("La respuesta no fue encontrada");
+        return res.status(404).json({
+            status: false,
+            mensaje: "La respuesta no fue encontrada",
+        });
     }
 
     return res.status(200).json(response);
@@ -126,7 +140,10 @@ app.put("/api/preguntas/:id", async (req, res) => {
         req.body.categoria == null ||
         req.body.puntos == null
     ) {
-        return res.status(400).send("Faltan datos para modificar la pregunta");
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para modificar la pregunta",
+        });
     }
 
     try {
@@ -153,7 +170,10 @@ app.put("/api/preguntas/:id", async (req, res) => {
 // Borrar la pregunta
 app.delete("/api/preguntas/:id", async (req, res) => {
     if (req.params.id == null) {
-        return res.status(400).send("No se mando un id");
+        return res.status(400).json({
+            status: false,
+            mensaje: "No se mando un id",
+        });
     }
 
     try {
@@ -175,7 +195,10 @@ app.get("/api/usuarios/:id", async (req, res) => {
     const response = await getOneUser(req.params.id);
 
     if (response.length == 0) {
-        return res.status(404).json("El usuario no fue encontrado");
+        return res.status(404).json({
+            status: false,
+            mensaje: "El usuario no fue encontrado",
+        });
     }
 
     return res.status(200).json(response);
