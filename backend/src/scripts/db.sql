@@ -1,8 +1,8 @@
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY, 
-    nombre VARCHAR(100),
-    usuario VARCHAR(30),
-    password VARCHAR(30), 
+    nombre VARCHAR(100) NOT NULL,
+    usuario VARCHAR(30) NOT NULL,
+    password VARCHAR(30) NOT NULL, 
     url_perfil VARCHAR(1000), 
     puntos_totales INT );
 

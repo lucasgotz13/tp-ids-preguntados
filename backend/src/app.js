@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
 const port = 3030;
 
+app.use(cors());
 app.use(express.json());
 
 const {
@@ -17,6 +19,10 @@ const {
     getOneRespuesta,
     getAllPreguntasRespuestas,
     getIdFromPregunta,
+    createUsuario,
+    updateUsuario,
+    deleteUsuario,
+    getUsuarios,
 } = require("./scripts/connectidb.js");
 
 // Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
@@ -52,6 +58,7 @@ app.get("/api/preguntas/:id", async (req, res) => {
   http://localhost:3030/api/preguntas/  */
 
 // Crear una pregunta y la respuesta
+// TODO: Pensar si al final agregamos un campo tipo "creado_por" para completar los 5 campos
 app.post("/api/preguntas/", async (req, res) => {
     if (
         req.body.pregunta == null ||
@@ -63,12 +70,10 @@ app.post("/api/preguntas/", async (req, res) => {
         req.body.respuesta_c == null ||
         req.body.respuesta_correcta == null
     ) {
-        return res
-            .status(400)
-            .json({
-                status: false,
-                mensaje: "Faltan datos para crear la pregunta o la respuesta",
-            });
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para crear la pregunta o la respuesta",
+        });
     }
 
     try {
@@ -176,18 +181,36 @@ app.delete("/api/preguntas/:id", async (req, res) => {
         });
     }
 
-    try {
-        await deletePregunta(req.params.id);
-
-        return res
-            .status(200)
-            .json({ status: true, mensaje: "Pregunta borrada exitosamente" });
-    } catch {
-        res.status(400).json({
+    const response = await deletePregunta(req.params.id);
+    if (!response) {
+        return res.status(400).json({
             status: false,
-            mensaje: "No se pudo borrar la pregunta",
+            mensaje: "No se pudo borrar la pregunta o la pregunta no existe",
         });
     }
+
+    return res
+        .status(200)
+        .json({ status: true, mensaje: "Pregunta borrada exitosamente" });
+});
+
+// Obtener todos los usuarios
+app.get("/api/usuarios/", async (req, res) => {
+    const response = await getUsuarios();
+
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Ha ocurrido un error al intentar obtener los usuarios",
+        });
+    }
+    if (response.length == 0) {
+        return res
+            .status(404)
+            .json({ status: false, mensaje: "No hay usuarios" });
+    }
+
+    return res.status(200).json(response);
 });
 
 // Obtener un solo usuario (usando el id)
@@ -202,6 +225,88 @@ app.get("/api/usuarios/:id", async (req, res) => {
     }
 
     return res.status(200).json(response);
+});
+
+// Crear un usuario
+app.post("/api/usuarios", async (req, res) => {
+    const { nombre, usuario, password, url_perfil, puntos_totales } = req.body;
+    if (nombre == null || usuario == null || password == null) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para crear el usuario",
+        });
+    }
+    const response = await createUsuario(
+        nombre,
+        usuario,
+        password,
+        url_perfil,
+        puntos_totales
+    );
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Hubo un error al crear el usuario",
+        });
+    }
+    return res.status(201).json({ status: true, mensaje: "Usuario creado" });
+});
+
+// Actualizar un usuario
+app.put("/api/usuarios/:id", async (req, res) => {
+    const id = req.params.id;
+    const { nombre, usuario, password, url_perfil, puntos_totales } = req.body;
+    if (
+        id == undefined ||
+        nombre == null ||
+        usuario == null ||
+        password == null ||
+        url_perfil == null ||
+        puntos_totales == null
+    ) {
+        return res
+            .status(400)
+            .json({ status: false, mensaje: "Faltan datos para el usuario" });
+    }
+    const response = await updateUsuario(
+        id,
+        nombre,
+        usuario,
+        password,
+        url_perfil,
+        puntos_totales
+    );
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Hubo un error al actualizar el usuario",
+        });
+    }
+    return res.status(200).json({
+        status: true,
+        mensaje: "El usuario ha sido actualizado correctamente",
+    });
+});
+
+// Borrar un usuario
+app.delete("/api/usuarios/:id", async (req, res) => {
+    const id = req.params.id;
+    if (id == null) {
+        return res
+            .status(400)
+            .json({ status: false, mensaje: "No se ha ingresado un id" });
+    }
+    const response = await deleteUsuario(id);
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Ha ocurrido un error al intentar borrar el usuario",
+        });
+    }
+    return res.status(200).json({
+        status: true,
+        mensaje: "El usuario se ha borrado correctamente",
+    });
 });
 
 app.listen(port, () => {
