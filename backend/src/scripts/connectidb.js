@@ -45,17 +45,18 @@ async function getIdFromPregunta(pregunta) {
     );
     return response.rows;
 }
-async function getOneUser(id) {
-    const response = await dbClient.query(
-        "SELECT * FROM usuarios WHERE id = $1",
-        [id]
-    );
-
-    return response.rows;
-}
 
 async function deletePregunta(id) {
-    dbClient.query("DELETE FROM preguntas WHERE id = $1", [id]);
+    try {
+        const result = await dbClient.query(
+            "DELETE FROM preguntas WHERE id = $1",
+            [id]
+        );
+        return result.rowCount > 0;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
 }
 
 async function getAllRespuestas() {
@@ -84,12 +85,87 @@ async function getOneRespuesta(id) {
     return response.rows;
 }
 
+async function getUsuarios() {
+    try {
+        const response = await dbClient.query("SELECT * FROM usuarios");
+        return response.rows;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+async function getOneUser(id) {
+    const response = await dbClient.query(
+        "SELECT * FROM usuarios WHERE id = $1",
+        [id]
+    );
+
+    return response.rows;
+}
+
+async function createUsuario(
+    nombre,
+    usuario,
+    password,
+    url_perfil,
+    puntos_totales
+) {
+    try {
+        dbClient.query(
+            "INSERT INTO usuarios (nombre, usuario, password, url_perfil, puntos_totales) VALUES ($1, $2, $3, $4, $5)",
+            [nombre, usuario, password, url_perfil ?? "", puntos_totales ?? 0]
+        );
+        return true;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+async function updateUsuario(
+    id,
+    nombre,
+    usuario,
+    password,
+    url_perfil,
+    puntos_totales
+) {
+    try {
+        dbClient.query(
+            "UPDATE usuarios SET  nombre = $2, usuario = $3, password = $4, url_perfil = $5, puntos_totales = $6 WHERE id = $1",
+            [id, nombre, usuario, password, url_perfil, puntos_totales]
+        );
+        return true;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+async function deleteUsuario(id) {
+    try {
+        const result = await dbClient.query(
+            "DELETE FROM usuarios WHERE id = $1",
+            [id]
+        );
+        return result.rowCount > 0;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
 module.exports = {
     getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
-    getOneUser,
     deletePregunta,
+    getUsuarios,
+    getOneUser,
+    createUsuario,
+    updateUsuario,
+    deleteUsuario,
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
