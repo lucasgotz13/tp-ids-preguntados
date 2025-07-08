@@ -47,17 +47,17 @@ max-width: 190px;
 margin-left:auto;
 margin-right: auto;
 margin-top: 15px;
+text-decoration: none;
+background-color: rgba(82, 129, 129, 0.952);
+color: #f1f5f7;
+}
+.card-content .title {
+    color: white; 
 }
 
 .clickable-card:hover {
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
-
-.card.clickable-card {
-text-decoration: none;
-}
-
 
 .navbar.is-transparent {
 background-color: transparent ;
