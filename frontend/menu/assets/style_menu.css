@@ -4,7 +4,7 @@
 --tertiary-color: #153046;
 --text-color: #333;
 }
-html, body { /* Asegúrate de tener esto */
+html, body { 
     height: 100%;
     margin: 0;
     padding: 0;
@@ -12,10 +12,8 @@ html, body { /* Asegúrate de tener esto */
 
 body {
 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-height: 100%;
 background: url(ventana.jpg);
 background-size: cover;
-height: 100dvh;
 }
 
 

@@ -4,9 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/style_crearpre.css">
     <title>Crear Pregunta </title>
 </head>
 <body>
+    <form class="box">
+        <div class="Gracias">
+        <h1 class="title is-2">¡Gracias por contribuir con el juego!</h1>
+        <p class="subtitle is-">Completa los siguientes campos para que tu pregunta este disponible para todos los jugadores</p>
+    </div>
+  <div class="field">
+    <label class="label">Pregunta:</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Tu pregunta..." />
+    </div>
+  </div>
+  
+  <div class="dropdown is-active">
+        <div class="dropdown-item">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span>Dropdown button</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+         </div>
+     <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content">
+            <a href="#" class="dropdown-item"> Deporte </a>
+            <a class="dropdown-item"> Mundi </a>
+            <a href="#" class="dropdown-item is-active"> Cine </a>
+            <a href="#" class="dropdown-item"> Mega-Mix </a>
+            <hr class="dropdown-divider" />
+        </div>
+        </div>
+    </div>
+
+  <div class="field">
+    <label class="label">Opcion 1 (Correcta):</label>
+    <div class="control">
+      <input class="input" type="text"placeholder="A" />
+    </div>
+  </div>
+
+
+  <div class="field">
+    <label class="label">Opcion 2:</label>
+    <div class="control">
+      <input class="input" type="text"placeholder="B" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Opcion 3:</label>
+    <div class="control">
+      <input class="input" type="text"placeholder="C" />
+    </div>
+  </div>
+
+
+  <div class="field">
+    <label class="label">Opcion 4</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="D" />
+    </div>
+  </div>
+
+
+  <button class="button is-primary">Guardar pregunta</button>
+</form>
     
 </body>
 </html>
