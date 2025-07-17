@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/style_crearpre.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Crear Pregunta</title>
+</head>
+
+<body>
+    <a class="button is-dark is-small" href="../menu/index.html">
+        <span class="icon">
+            <i class="fas fa-home"></i>
+        </span>
+        <span>MENU</span>
+    </a>
+
+    <div class="box" >
+        <div class="Gracias">
+            <h1 class="title is-2 has-text-centered">¡Gracias por contribuir con el juego!</h1>
+            <p class="subtitle is-">Completa los siguientes campos para que tu pregunta esté disponible para todos los jugadores</p>
+        </div>
+        <div class="field" >
+            <label class="label">Pregunta:</label>
+            <div class="control">
+                <input class="input" type="text" required placeholder="Tu pregunta..." />
+            </div>
+        </div>
+
+        <div class="field has-addions" >
+          <div class="control">
+            <span class="select">
+              <select>
+                <option> Categoria </option>
+                <option> Deportes </option>
+                <option> Mundi </option>
+                <option> Cine </option>
+                <option> Mega-Mix </option>
+              </select>
+            </span>
+          </div>
+        </div>
+
+        <div class="field ">
+            <label class="label">Opción 1 (Correcta):</label>
+            <div class="control">
+                <input class="input" type="text" required placeholder="A" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Opción 2:</label>
+            <div class="control">
+                <input class="input" type="text"required placeholder="B" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Opción 3:</label>
+            <div class="control">
+                <input class="input" type="text" required placeholder="C" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Opción 4</label>
+            <div class="control">
+                <input class="input" type="text" required placeholder="D" />
+            </div>
+        </div>
+
+        <button class="button is-primary">Guardar pregunta</button>
+    </div>
+</body>
+</html>
