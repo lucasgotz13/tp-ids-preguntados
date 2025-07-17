@@ -12,11 +12,11 @@
         <h1>¡Bienvenido a QUIZ CITY!</h1>
         <p>Desafía tus conocimientos con este juego trivia.</p>
     </div>
-    <div class ="formulario">
+    <div class ="formulario" id="form">
         <h1>Inicio</h1><p>Ingrese su usuario antes de comenzar a jugar.</p>
         <form method="post">
             <div class="campos">
-                <input type="text" required placeholder="usuario">
+                <input type="text" id="nombre" required placeholder="usuario">
             </div>
             <div class="boton">
                 <button type="submit">Iniciar sesion</button>
@@ -26,5 +26,43 @@
             </div>
         </form>
     </div>
+    <script>
+        
+       document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const nombre=document.getElementById("nombre").value.trim();
+
+        if(!nombre){
+            alert("usuario no encontrado");
+            return;
+        }
+        
+        try {
+            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(nombre)}`)
+
+              if (!response.ok) {
+                alert("Usuario no encontrado");
+                return;
+                }
+
+                const usuario= await response.json();
+
+                localStorage.setItem("usuario", JSON.stringify(usuario));
+
+                window.location.href="http://127.0.0.1:4000/menu/index.html";
+        }catch(error){
+            console.error("Error al buscar usuario",error);
+            alert("No se pudo conectar con el servidor");
+
+        }
+
+
+    });
+
+
+    </script>
+
+
 </body>
 </html>

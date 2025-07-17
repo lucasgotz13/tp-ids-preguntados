@@ -7,17 +7,17 @@ const dbClient = new Pool({
     port: 5432,
     database: "preguntados",
 });
+// Consegur todas las preguntas y respuestas 
 
-async function getAllPreguntasRespuestas() {
-    const response = await dbClient.query(
-        "SELECT * FROM preguntas, respuestas where preguntas.id = respuestas.id_pregunta"
-    );
+
+async function getAllPreguntas() {
+    const response = await dbClient.query("SELECT * FROM preguntas INNER JOIN respuestas ON preguntas.id = respuestas.id_pregunta");
     return response.rows;
 }
 
-async function getPreguntaRespuestaById(id) {
+async function getPreguntaById(id) {
     const response = await dbClient.query(
-        "SELECT * FROM preguntas, respuestas where preguntas.id = $1 AND respuestas.id_pregunta = $1",
+        "SELECT * FROM preguntas WHERE id = $1",
         [id]
     );
 
@@ -25,9 +25,13 @@ async function getPreguntaRespuestaById(id) {
 }
 
 async function createPregunta(pregunta, dificultad, categoria, puntos) {
-    await dbClient.query(
+    dbClient.query(
         "INSERT INTO preguntas (pregunta, dificultad, categoria, puntos) VALUES ($1, $2, $3, $4)",
         [pregunta, dificultad, categoria, puntos]
+    );
+
+    const response = await dbClient.query(
+        
     );
 }
 
@@ -37,26 +41,17 @@ async function updatePregunta(id, pregunta, dificultad, categoria, puntos) {
         [id, pregunta, dificultad, categoria, puntos]
     );
 }
-
-async function getIdFromPregunta(pregunta) {
+async function getOneUserById(id) {
     const response = await dbClient.query(
-        "SELECT id FROM preguntas WHERE preguntas.pregunta = $1",
-        [pregunta]
+        "SELECT * FROM usuarios WHERE id = $1",
+        [id]
     );
+
     return response.rows;
 }
 
 async function deletePregunta(id) {
-    try {
-        const result = await dbClient.query(
-            "DELETE FROM preguntas WHERE id = $1",
-            [id]
-        );
-        return result.rowCount > 0;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
+    dbClient.query("DELETE FROM preguntas WHERE id = $1", [id]);
 }
 
 async function getAllRespuestas() {
@@ -84,91 +79,26 @@ async function getOneRespuesta(id) {
 
     return response.rows;
 }
-
-async function getUsuarios() {
-    try {
-        const response = await dbClient.query("SELECT * FROM usuarios");
-        return response.rows;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
-
-async function getOneUser(id) {
-    const response = await dbClient.query(
-        "SELECT * FROM usuarios WHERE id = $1",
-        [id]
+async function getOneUserByNombre(nombre) {
+    const response= await dbClient.query (
+        "SELECT * FROM usuarios WHERE nombre= $1 ", 
+        [nombre]
     );
-
     return response.rows;
 }
 
-async function createUsuario(
-    nombre,
-    usuario,
-    password,
-    url_perfil,
-    puntos_totales
-) {
-    try {
-        dbClient.query(
-            "INSERT INTO usuarios (nombre, usuario, password, url_perfil, puntos_totales) VALUES ($1, $2, $3, $4, $5)",
-            [nombre, usuario, password, url_perfil ?? "", puntos_totales ?? 0]
-        );
-        return true;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
 
-async function updateUsuario(
-    id,
-    nombre,
-    usuario,
-    password,
-    url_perfil,
-    puntos_totales
-) {
-    try {
-        dbClient.query(
-            "UPDATE usuarios SET  nombre = $2, usuario = $3, password = $4, url_perfil = $5, puntos_totales = $6 WHERE id = $1",
-            [id, nombre, usuario, password, url_perfil, puntos_totales]
-        );
-        return true;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
-
-async function deleteUsuario(id) {
-    try {
-        const result = await dbClient.query(
-            "DELETE FROM usuarios WHERE id = $1",
-            [id]
-        );
-        return result.rowCount > 0;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
 
 module.exports = {
-    getPreguntaRespuestaById,
+    getAllPreguntas,
+    getPreguntaById,
     createPregunta,
     updatePregunta,
+    getOneUserById,
     deletePregunta,
-    getUsuarios,
-    getOneUser,
-    createUsuario,
-    updateUsuario,
-    deleteUsuario,
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
-    getAllPreguntasRespuestas,
-    getIdFromPregunta,
+    getOneUserByNombre,
+
 };
