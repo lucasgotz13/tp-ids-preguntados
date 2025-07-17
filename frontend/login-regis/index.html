@@ -18,6 +18,9 @@
             <div class="campos">
                 <input type="text" id="nombre" required placeholder="usuario">
             </div>
+            <div id="mensaje_error">
+                No se a encontrado el usuario
+            </div>
             <div class="boton">
                 <button type="submit">Iniciar sesion</button>
             </div>
@@ -31,18 +34,24 @@
        document.getElementById("form").addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        const divError=document.getElementById("mensaje_error");
+
         const nombre=document.getElementById("nombre").value.trim();
 
         if(!nombre){
-            alert("usuario no encontrado");
+            divError.text,content="El usuario no se encontró"
+            divError.style.display="block";
             return;
         }
         
         try {
             const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(nombre)}`)
 
+                
+
               if (!response.ok) {
-                alert("Usuario no encontrado");
+                divError.text,content="El usuario no se encontró"
+                divError.style.display="block";
                 return;
                 }
 
@@ -53,10 +62,10 @@
                 window.location.href="http://127.0.0.1:4000/menu/index.html";
         }catch(error){
             console.error("Error al buscar usuario",error);
-            alert("No se pudo conectar con el servidor");
-
+            divError.text.content="No se pudo conectar con el servidor"
+            divError.style.display="block";
+            console.log(divError);
         }
-
 
     });
 
