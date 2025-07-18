@@ -279,6 +279,16 @@ app.post("/api/usuarios", async (req, res) => {
         mensaje: "La edad no es valida"
     })
 
+    //confirmo si el usuario ya existe
+
+    const existe= await getOneUserByUsuario(usuario);
+
+    if (existe.length != 0) return res.status(400).json({
+        status: false,
+        mensaje: "El usuario ya existe"
+    })
+
+
     const response = await createUsuario(
         nombre,
         usuario,

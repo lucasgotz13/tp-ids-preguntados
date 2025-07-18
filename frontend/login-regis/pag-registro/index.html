@@ -13,18 +13,21 @@
             <h1>QUIZ CITY</h1>
             <p>¿Es tu primera vez jugando? Registrate.</p>
         </div>
-        <div class ="formulario">
+        <div class ="formulario" id="form_regis">
             <h2>Crear cuenta</h2>
             <form method="post">
                 <div class="campos">
-                    <input type="text" required placeholder="usuario">
+                    <input type="text" id="usuario_regis" required placeholder="usuario">
+                </div>
+                <div id="mensaje_error">
+                    usaurio Invalido.
                 </div>
                 <div class="campos">
-                    <input type="text" required placeholder="nombre">
+                    <input type="text" id="nombre_regis" required placeholder="nombre">
                 </div>
 
                 <div class="campos">
-                    <input type="text" required placeholder="edad">
+                    <input type="text" id="edad_regis" required placeholder="edad">
                 </div>
                 <div class="boton">
                     <button type="submit">Confirmar</button>
@@ -33,5 +36,58 @@
             </form>
         </div>
     </div>
+    
+    <script>
+        document.getElementById("form_regis").addEventListener("submit", async (e)=>{
+            e.preventDefault();
+
+            const usuario=document.getElementById("usuario_regis").value.trim();
+            const nombre=document.getElementById("nombre_regis").value.trim();
+            const edad=parseInt(document.getElementById("edad_regis").value);
+
+            const divError=document.getElementById("mensaje_error");
+
+            if(!nombre || !usuario || !edad){
+                divError.style.display="block";
+                return
+            }
+
+             try {
+                const response = await fetch("http://localhost:3030/api/usuarios", {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        usuario: usuario,
+                        nombre: nombre,
+                        edad: edad
+                    })
+                    });
+
+                    if (!response.ok) {
+                    divError.style.display="block";
+                    return
+                    }
+
+                const data = await response.json();
+                console.log("Usuario creado:", data);
+                alert("Usuario creado con éxito");
+
+                localStorage.setItem("usuario", JSON.stringify(data));
+
+                window.location.href="http://localhost:8080/menu/index.html";
+
+            }catch(error){
+                console.error("Error:", error);
+                divError.style.display="block";
+            }
+        })
+
+    </script>
+
+
+
+
 </body>
 </html>
