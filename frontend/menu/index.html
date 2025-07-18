@@ -11,118 +11,124 @@
 </head>
 
 <body>
-    <!--empieza encabezado de bulma-->
-    <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="../login-regis/index.html">
-                <h1 class="title is-4">Quiz City</h1>
-            </a>
+    <div class = "container" id="fondo">
+        <!--empieza encabezado de bulma-->
+        <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="../login-regis/index.html">
+                    <h1 class="title is-4">Quiz City</h1>
+                </a>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/crear_preg/index.html">
-                    Crear Pregunta
-                </a> 
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/crear_preg/index.html">
+                        Crear Pregunta
+                    </a> 
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Usuario
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="../login-regis/index.html">
-                            Cambiar usuario
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Usuario
                         </a>
-                        <a class="navbar-item">
-                            Eliminar usuario
-                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="../login-regis/index.html">
+                                Cambiar usuario
+                            </a>
+                            <a class="navbar-item">
+                                Eliminar usuario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-info" href="https://www.instagram.com/city_quiz_official/" target="_blank">
+                                <span class="icon">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </span>
+                                <span>Nuestras redes</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </nav>
+        <!--fin encabezado de bulma-->
+        <div class="container">
+            <figure class="image" id="menu_img">
+                <img src="../menu/assets/menu.jpg"
+            </figure>
+        </div>
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-info" href="https://www.instagram.com/city_quiz_official/" target="_blank">
-                            <span class="icon">
-                                <i class="fa-brands fa-instagram"></i>
-                            </span>
-                            <span>Nuestras redes</span>
-                        </a>
-                    </div>
-                </div>
+        <div class="container">
+            <div class="notification is-info">
+                <strong>Elegi una categoria:</strong> 
             </div>
         </div>
-    </nav>
-    <!--fin encabezado de bulma-->
-    <div class="box">MENU</div> 
 
-    <div class="container">
-        <div class="notification is-info">
-            <strong>Elegi una categoria:</strong> 
-        </div>
+        <!--tarjetas categoria con bulma-->
+        <div class="columns is-multiline is-centered"> 
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="deportes" onclick= "location.href='/juego/index.html'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/deporte.jpg" >
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Deportes</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="mundi" onclick= "location.href='/juego/index.html'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/mundi.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Mundi</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="cine" onclick= "location.href='/juego/index.html'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/cine.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Cine</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="megamix" onclick= "location.href='/juego/index.html'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/megamix.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">MegaMix</p>
+                    </div>
+                    </div>
+            </div>
     </div>
-
-    <!--tarjetas categoria con bulma-->
-    <div class="columns is-multiline is-centered"> 
-        <div class="column is-one-quarter-desktop ">
-            <div class="card clickable-card" onclick= "location.href='/juego/index.html'">
-                <div class="card-image">
-                    <figure class="imagen">
-                        <img src="../menu/assets/deportes.png" >
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <p class="title is-5">Deportes</p>
-                </div>
-                </div>
-        </div>
-
-        <div class="column is-one-quarter-desktop ">
-            <div class="card clickable-card" onclick= "location.href='/juego/index.html'">
-                <div class="card-image">
-                    <figure class="imagen">
-                        <img src="../menu/assets/mundi.png">
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <p class="title is-5">Mundi</p>
-                </div>
-                </div>
-        </div>
-
-        <div class="column is-one-quarter-desktop ">
-            <div class="card clickable-card" onclick= "location.href='/juego/index.html'">
-                <div class="card-image">
-                    <figure class="imagen">
-                        <img src="../menu/assets/cine.jpg">
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <p class="title is-5">Cine</p>
-                </div>
-                </div>
-        </div>
-
-        <div class="column is-one-quarter-desktop ">
-            <div class="card clickable-card" onclick= "location.href='/juego/index.html'">
-                <div class="card-image">
-                    <figure class="imagen">
-                        <img src="../menu/assets/megamix.jpg">
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <p class="title is-5">MegaMix</p>
-                </div>
-                </div>
-        </div>
 </body>
 </html>

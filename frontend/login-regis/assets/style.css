@@ -12,25 +12,21 @@ body{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background: url(Night\ city.jpeg);
     background-size: cover;
+    background-position: relative;
     height: 100dvh;
 }
 
-.bienvenida {
-    text-align: center; 
-    color: var(--primary-color);
-    margin-top: 20px; 
-    margin-bottom: 40px; 
-    padding: 15px 20px; 
-    background-color: rgba(253, 255, 255, 0.952);  
-    border-radius: 8px; 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  
-    max-width: 500px;
-    margin-left: auto;  
-    margin-right: auto; 
+#fondo{
+    width: 100%;
 }
 
-.bienvenida p{
-    color: #333;
+.imagen {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 30%;
 }
 
 .formulario {
@@ -61,8 +57,9 @@ body{
 }
 
 .formulario form {
-    padding: 0 40px;
+    padding-bottom: 10px;
     box-sizing: border-box;
+    padding-top: 5px;
 }
 
 .formulario h1 + p { 
@@ -118,6 +115,13 @@ body{
 }
 .registrarse a:hover {
     text-decoration: underline;
+}
+#mensaje_error{
+    display:none;
+    color: red;
+    margin-top: -20px;
+    padding-bottom:20px;
+    margin-left: 30px;
 }
 
 #mensaje_error{
