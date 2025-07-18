@@ -39,10 +39,10 @@ app.get("/api/preguntas/", async (req, res) => {
     res.status(200).json(response);
 });
 
-// obtener usuario buscando por nombre
-app.get("/api/usuarios/:nombre",async (req,res) => {
+// obtener usuario buscando por usuario
+app.get("/api/usuarios/:usuario",async (req,res) => {
 
-    const response= await getOneUserByUsuario(req.params.nombre);
+    const response= await getOneUserByUsuario(req.params.usuario);
     
     if (response.length == 0){
         return res.status(404).json({
@@ -267,17 +267,22 @@ app.get("/api/usuarios/", async (req, res) => {
 
 // Crear un usuario
 app.post("/api/usuarios", async (req, res) => {
-    const { nombre, usuario, password, url_perfil, puntos_totales } = req.body;
-    if (nombre == null || usuario == null || password == null) {
+    const { nombre, usuario, edad, url_perfil, puntos_totales } = req.body;
+    if (nombre == null || usuario == null || edad == null) {
         return res.status(400).json({
             status: false,
             mensaje: "Faltan datos para crear el usuario",
         });
     }
+    if (edad < 0 || edad > 100) return res.status(400).json({
+        status: false,
+        mensaje: "La edad no es valida"
+    })
+
     const response = await createUsuario(
         nombre,
         usuario,
-        password,
+        edad,
         url_perfil,
         puntos_totales
     );
@@ -293,12 +298,12 @@ app.post("/api/usuarios", async (req, res) => {
 // Actualizar un usuario
 app.put("/api/usuarios/:id", async (req, res) => {
     const id = req.params.id;
-    const { nombre, usuario, password, url_perfil, puntos_totales } = req.body;
+    const { nombre, usuario, edad, url_perfil, puntos_totales } = req.body;
     if (
         id == undefined ||
         nombre == null ||
         usuario == null ||
-        password == null ||
+        edad == null ||
         url_perfil == null ||
         puntos_totales == null
     ) {
@@ -310,7 +315,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
         id,
         nombre,
         usuario,
-        password,
+        edad,
         url_perfil,
         puntos_totales
     );
@@ -346,9 +351,6 @@ app.delete("/api/usuarios/:id", async (req, res) => {
         mensaje: "El usuario se ha borrado correctamente",
     });
 });
-
-
-
 
 
 app.listen(port, () => {

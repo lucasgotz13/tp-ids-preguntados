@@ -156,14 +156,14 @@ async function getOneUser(id) {
 async function createUsuario(
     nombre,
     usuario,
-    password,
+    edad,
     url_perfil,
     puntos_totales
 ) {
     try {
         dbClient.query(
-            "INSERT INTO usuarios (nombre, usuario, password, url_perfil, puntos_totales) VALUES ($1, $2, $3, $4, $5)",
-            [nombre, usuario, password, url_perfil ?? "", puntos_totales ?? 0]
+            "INSERT INTO usuarios (nombre, usuario, edad, url_perfil, puntos_totales) VALUES ($1, $2, $3, $4, $5)",
+            [nombre, usuario, edad, url_perfil ?? "", puntos_totales ?? 0]
         );
         return true;
     } catch (e) {
@@ -176,14 +176,14 @@ async function updateUsuario(
     id,
     nombre,
     usuario,
-    password,
+    edad,
     url_perfil,
     puntos_totales
 ) {
     try {
         dbClient.query(
-            "UPDATE usuarios SET  nombre = $2, usuario = $3, password = $4, url_perfil = $5, puntos_totales = $6 WHERE id = $1",
-            [id, nombre, usuario, password, url_perfil, puntos_totales]
+            "UPDATE usuarios SET  nombre = $2, usuario = $3, edad = $4, url_perfil = $5, puntos_totales = $6 WHERE id = $1",
+            [id, nombre, usuario, edad, url_perfil, puntos_totales]
         );
         return true;
     } catch (e) {
