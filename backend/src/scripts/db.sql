@@ -2,7 +2,7 @@ CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY, 
     nombre VARCHAR(100) NOT NULL,
     usuario VARCHAR(30) NOT NULL,
-    password VARCHAR(30) NOT NULL, 
+    edad INT NOT NULL CHECK (edad >= 0 AND edad <= 100),
     url_perfil VARCHAR(1000), 
     puntos_totales INT );
 
@@ -21,3 +21,6 @@ create table respuestas (
     respuesta_correcta varchar(255) 
     id_pregunta INT REFERENCES preguntas(id) 
      );
+
+
+-- password VARCHAR(30) NOT NULL, 
