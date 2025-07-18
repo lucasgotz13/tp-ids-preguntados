@@ -1,29 +1,18 @@
 const express = require("express");
-const { Pool } = require("pg");
-
-const dbClient = new Pool({
-    user: "postgres",
-    password: "postgres",
-    host: "localhost",
-    port: 5432,
-    database: "preguntados",
-});
+const cors = require("cors");
 
 const app = express();
-const cors = require("cors");
-app.use(cors());
 
 const port = 3030;
 
+app.use(cors());
 app.use(express.json());
 
 const {
-
-    getAllPreguntas,
-    getPreguntaById,
+    getPreguntaRespuestaById,
     createPregunta,
     updatePregunta,
-    getOneUserById,
+    getOneUser,
     deletePregunta,
     createRespuesta,
     getAllRespuestas,
@@ -34,19 +23,18 @@ const {
     updateUsuario,
     deleteUsuario,
     getUsuarios,
-    getOneUserByNombre,
-
+    getOneUserByUsuario,
+    updateRespuesta,
 } = require("./scripts/connectidb.js");
 
-
-
-
-
-// Obtener todas las preguntas
+// Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
 app.get("/api/preguntas/", async (req, res) => {
-    const response = await getAllPreguntas();
+    const response = await getAllPreguntasRespuestas();
     if (response === 0) {
-        return res.status(404).json("No hay preguntas");
+        return res.status(404).json({
+            status: false,
+            mensaje: "No hay preguntas",
+        });
     }
     res.status(200).json(response);
 });
@@ -54,7 +42,7 @@ app.get("/api/preguntas/", async (req, res) => {
 // obtener usuario buscando por nombre
 app.get("/api/usuarios/:nombre",async (req,res) => {
 
-    const response= await getOneUserByNombre(req.params.nombre);
+    const response= await getOneUserByUsuario(req.params.nombre);
     
     if (response.length == 0){
         return res.status(404).json({
@@ -68,26 +56,41 @@ app.get("/api/usuarios/:nombre",async (req,res) => {
 
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
-    const response =await getPreguntaById(req.params.id);
+    const response = await getPreguntaRespuestaById(req.params.id);
     if (response.length === 0) {
-        return res.status(404).json("La pregunta no fue encontrada");
+        return res.status(404).json({
+            status: false,
+            mensaje: "La pregunta no fue encontrada",
+        });
     }
 
     return res.status(200).json(response);
 });
 
-
 /*curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"pregunta":"Como se llama el profe de la catedra?","dificultad":"facil", 
-  "categoria" : "fiuba", "puntos": "10"}' \
+  --request POST \ 
+  --data '{"pregunta":"¿Quién fue el último campeon del mundo de fútbol?","dificultad":"facil", 
+  "categoria" : "deportes", "puntos": "10", "respuesta_a": "Brasil", "respuesta_b": "Argentina", "respuesta_c": "Francia", "respuesta_correcta": "b"
+  ' \ 
   http://localhost:3030/api/preguntas/  */
 
-// Crear una pregunta
+// Crear una pregunta y la respuesta
+// TODO: Pensar si al final agregamos un campo tipo "creado_por" para completar los 5 campos
 app.post("/api/preguntas/", async (req, res) => {
-   
-    if (req.body.pregunta == null || req.body.dificultad == null || req.body.categoria == null || req.body.puntos == null) {
-        return res.status(400).send("Faltan datos para crear la pregunta");
+    if (
+        req.body.pregunta == null ||
+        req.body.dificultad == null ||
+        req.body.categoria == null ||
+        req.body.puntos == null ||
+        req.body.respuesta_a == null ||
+        req.body.respuesta_b == null ||
+        req.body.respuesta_c == null ||
+        req.body.respuesta_correcta == null
+    ) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para crear la pregunta o la respuesta",
+        });
     }
 
     try {
@@ -97,53 +100,9 @@ app.post("/api/preguntas/", async (req, res) => {
             req.body.categoria,
             req.body.puntos
         );
-        
-        return res.status(201).json({
-            status: true,
-            mensaje: "Pregunta creada exitosamente",
-        });
-    } catch {
-        return res
-            .status(400)
-            .json({ status: true, mensaje: "No se pudo crear la pregunta" });
-    }
-});
-// Ver todas las respuestas de todas las preguntas
-app.get("/api/respuestas/", async (req,res) => {
-
-    const response = await getAllRespuestas();
-    
-    if (response.length === 0) {
-        return res.status(404).json("No hay respuestas");
-    }
-
-    return res.status(200).json(response);
-}) 
-
-
-
-// para poder c
-/*curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"id_pregunta":"1","respuesta_a":"Manuel Bilbao", "respuesta_b":"Nico Riedel",
-  "respuesta_c" : "La peke", "respuesta_correcta": "Manuel Camejo"}' \
-  http://localhost:3030/api/respuestas/  */
-
-
-// crear respuestas de pregunta
-app.post("/api/respuestas/", async (req, res) => {
-
-    if( req.body.id_pregunta == null || 
-        req.body.respuesta_a == null || 
-        req.body.respuesta_b == null || 
-        req.body.respuesta_c == null || 
-        req.body.respuesta_correcta == null) {
-        return res.status(400).send("Faltan datos para crear la respuesta");
-    }
-
-    try {
+        const response = await getIdFromPregunta(req.body.pregunta);
         await createRespuesta(
-            req.body.id_pregunta,
+            response[0].id,
             req.body.respuesta_a,
             req.body.respuesta_b,
             req.body.respuesta_c,
@@ -152,23 +111,94 @@ app.post("/api/respuestas/", async (req, res) => {
 
         return res.status(201).json({
             status: true,
-            mensaje: "Respuesta creada exitosamente",
+            mensaje: "Pregunta creada exitosamente",
         });
     } catch {
         return res
             .status(400)
-            .json({ status: true, mensaje: "No se pudo crear la respuesta" });
+            .json({ status: false, mensaje: "No se pudo crear la pregunta" });
     }
-   
 });
 
+// Ver todas las respuestas de todas las preguntas
+app.get("/api/respuestas/", async (req, res) => {
+    const response = await getAllRespuestas();
 
+    if (response.length === 0) {
+        return res.status(404).json({
+            status: false,
+            mensaje: "No hay respuestas",
+        });
+    }
+
+    return res.status(200).json(response);
+});
+
+// Ver una respuesta de una pregunta (usando el id)
+app.get("/api/respuestas/:id", async (req, res) => {
+    const response = await getOneRespuesta(req.params.id);
+
+    if (response.length === 0) {
+        return res.status(404).json({
+            status: false,
+            mensaje: "La respuesta no fue encontrada",
+        });
+    }
+
+    return res.status(200).json(response);
+});
+
+app.put("/api/respuestas/:id", async (req, res) => {
+    const {respuesta_a, respuesta_b, respuesta_c, respuesta_correcta} = req.body
+    const id = req.params.id
+    console.log(req.body)
+
+    if (id == null) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "No se ingreso el id de la respuesta"
+        })
+    }
+
+    if (respuesta_a == null || respuesta_b == null || respuesta_c == null || respuesta_correcta == null) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para modificar la respuesta"
+        })
+    }
+
+    const response = await updateRespuesta(id, respuesta_a, respuesta_b, respuesta_c, respuesta_correcta)
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "No se pudo modificar la respuesta"
+        })
+    }
+
+    return res.status(200).json({
+        status: true,
+        mensaje: "La respuesta fue modificada correctamente"
+    })
+})
+
+/*curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"id_pregunta":"1","respuesta_a":"Manuel Bilbao", "respuesta_b":"Nico Riedel",
+  "respuesta_c" : "La peke", "respuesta_correcta": "Manuel Camejo"}' \
+  http://localhost:3030/api/respuestas/  */
 
 // Modificar la pregunta
 app.put("/api/preguntas/:id", async (req, res) => {
-   
-if (req.body.pregunta == null || req.body.dificultad == null || req.body.categoria == null || req.body.puntos == null) {
-        return res.status(400).send("Faltan datos para modificar la pregunta");
+    if (
+        req.body.pregunta == null ||
+        req.body.dificultad == null ||
+        req.body.categoria == null ||
+        req.body.puntos == null
+    ) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Faltan datos para modificar la pregunta",
+        });
     }
 
     try {
@@ -194,39 +224,44 @@ if (req.body.pregunta == null || req.body.dificultad == null || req.body.categor
 
 // Borrar la pregunta
 app.delete("/api/preguntas/:id", async (req, res) => {
-
-
-    if (req.params,id == null) {
-        return res.status(400).send("No se mando un id");
-    }
-
-    try {
-        await deletePregunta(req.params.id);
-
-        return res
-            .status(200)
-            .json({ status: true, mensaje: "Pregunta borrada exitosamente" });
-    } catch {
-        res.status(400).json({
+    if (req.params.id == null) {
+        return res.status(400).json({
             status: false,
-            mensaje: "No se pudo borrar la pregunta",
+            mensaje: "No se mando un id",
         });
     }
+
+    const response = await deletePregunta(req.params.id);
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "No se pudo borrar la pregunta o la pregunta no existe",
+        });
+    }
+
+    return res
+        .status(200)
+        .json({ status: true, mensaje: "Pregunta borrada exitosamente" });
 });
 
-// obtener usuario buscando por nombre
-app.get("/api/usuarios/:nombre",async (req,res) => {
+// Obtener todos los usuarios
+app.get("/api/usuarios/", async (req, res) => {
+    const response = await getUsuarios();
 
-    const response= await getOneUserByNombre(req.params.nombre);
-    
-    if (response.length == 0){
-        return res.status(404).json("El usuario no fue encontrado");
+    if (!response) {
+        return res.status(400).json({
+            status: false,
+            mensaje: "Ha ocurrido un error al intentar obtener los usuarios",
+        });
+    }
+    if (response.length == 0) {
+        return res
+            .status(404)
+            .json({ status: false, mensaje: "No hay usuarios" });
     }
 
     return res.status(200).json(response);
-})
-
-
+});
 
 
 
@@ -311,7 +346,6 @@ app.delete("/api/usuarios/:id", async (req, res) => {
         mensaje: "El usuario se ha borrado correctamente",
     });
 });
-
 
 
 
