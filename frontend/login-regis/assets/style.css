@@ -120,4 +120,10 @@ body{
     text-decoration: underline;
 }
 
-
+#mensaje_error{
+    display:none;
+    color: red;
+    margin-top: -20px;
+    padding-bottom:20px;
+    margin-left: 30px;
+}

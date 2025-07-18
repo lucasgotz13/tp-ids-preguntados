@@ -23,6 +23,7 @@ const {
     updateUsuario,
     deleteUsuario,
     getUsuarios,
+    getOneUserByNombre,
 } = require("./scripts/connectidb.js");
 
 // Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
@@ -36,6 +37,21 @@ app.get("/api/preguntas/", async (req, res) => {
     }
     res.status(200).json(response);
 });
+
+// obtener usuario buscando por nombre
+app.get("/api/usuarios/:nombre",async (req,res) => {
+
+    const response= await getOneUserByNombre(req.params.nombre);
+    
+    if (response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "El usuario no fue encontrado",
+        });
+    }
+
+    return res.status(200).json(response);
+})
 
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
@@ -213,19 +229,7 @@ app.get("/api/usuarios/", async (req, res) => {
     return res.status(200).json(response);
 });
 
-// Obtener un solo usuario (usando el id)
-app.get("/api/usuarios/:id", async (req, res) => {
-    const response = await getOneUser(req.params.id);
 
-    if (response.length == 0) {
-        return res.status(404).json({
-            status: false,
-            mensaje: "El usuario no fue encontrado",
-        });
-    }
-
-    return res.status(200).json(response);
-});
 
 // Crear un usuario
 app.post("/api/usuarios", async (req, res) => {
@@ -308,6 +312,10 @@ app.delete("/api/usuarios/:id", async (req, res) => {
         mensaje: "El usuario se ha borrado correctamente",
     });
 });
+
+
+
+
 
 app.listen(port, () => {
     console.log("Listening on port", port);
