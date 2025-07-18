@@ -89,6 +89,14 @@ async function getOneUserByNombre(nombre) {
 
 
 
+async function getOneUserByNombre(nombre) {
+    const response= await dbClient.query (
+        "SELECT * FROM usuarios WHERE nombre= $1 ", 
+        [nombre]
+    );
+    return response.rows;
+}
+
 module.exports = {
     getAllPreguntas,
     getPreguntaById,
@@ -99,6 +107,7 @@ module.exports = {
     createRespuesta,
     getAllRespuestas,
     getOneRespuesta,
+    getAllPreguntasRespuestas,
+    getIdFromPregunta,
     getOneUserByNombre,
-
 };
