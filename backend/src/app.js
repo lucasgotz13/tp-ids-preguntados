@@ -276,7 +276,7 @@ app.post("/api/usuarios", async (req, res) => {
     }
     if (edad < 0 || edad > 100) return res.status(400).json({
         status: false,
-        mensaje: "La edad no es valida"
+        mensajeEdad: "La edad no es valida"
     })
 
     //confirmo si el usuario ya existe
@@ -285,7 +285,7 @@ app.post("/api/usuarios", async (req, res) => {
 
     if (existe.length != 0) return res.status(400).json({
         status: false,
-        mensaje: "El usuario ya existe"
+        mensajeUsuario: "El usuario ya existe"
     })
 
 

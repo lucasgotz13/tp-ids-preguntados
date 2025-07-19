@@ -19,15 +19,18 @@
                 <div class="campos">
                     <input type="text" id="usuario_regis" required placeholder="usuario">
                 </div>
-                <div id="mensaje_error">
-                    usaurio Invalido.
+                <div id="mensaje_error_usuario">
+                    usaurio invalido.
                 </div>
                 <div class="campos">
                     <input type="text" id="nombre_regis" required placeholder="nombre">
                 </div>
-
+                
                 <div class="campos">
                     <input type="text" id="edad_regis" required placeholder="edad">
+                </div>
+                 <div id="mensaje_error_edad">
+                    Edad invalida
                 </div>
                 <div class="boton">
                     <button type="submit">Confirmar</button>
@@ -45,10 +48,12 @@
             const nombre=document.getElementById("nombre_regis").value.trim();
             const edad=parseInt(document.getElementById("edad_regis").value);
 
-            const divError=document.getElementById("mensaje_error");
+            const divError_usuario=document.getElementById("mensaje_error_usuario");
+            const divError_edad=document.getElementById("mensaje_error_edad");
+            
 
             if(!nombre || !usuario || !edad){
-                divError.style.display="block";
+                alert("Complete los campos")
                 return
             }
 
@@ -65,10 +70,20 @@
                     })
                     });
 
-                    if (!response.ok) {
-                    divError.style.display="block";
-                    return
+                   if(!response.ok){
+                    const errorData = await response.json();
+                    if (errorData.mensajeEdad) {
+                        divError_edad.textContent = errorData.mensajeEdad;
+                        divError_edad.style.display = "block";
                     }
+                    if (errorData.mensajeUsuario) {
+                        divError_usuario.textContent = errorData.mensajeUsuario;
+                        divError_usuario.style.display = "block";
+                    }
+                    return;
+                        
+                   }
+
 
                 const data = await response.json();
                 console.log("Usuario creado:", data);
