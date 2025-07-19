@@ -30,23 +30,22 @@ body{
 }
 
 .formulario {
-    position: absolute;
-    top: 62%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    transform: translateY(85%);
+    padding: 20px;
     width: 400px;
-    background: var(--background-color);
-    border-radius: 10px;
+    background: linear-gradient(to bottom, rgb(161, 23, 225), #5a0ae5);
+    border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.formulario:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .formulario h1 {
     text-align: center; 
     padding: 0 0 10px 0;
+    color: var(--background-color);
+    font-size: 40px;
 }  
 
 .formulario h2 {
@@ -64,8 +63,8 @@ body{
 
 .formulario h1 + p { 
     text-align: center;                   
-    color: var(--text-color); 
-    font-size: 14px;          
+    color: white; 
+    font-size: 20px;     
     border-bottom: 1px solid silver; 
     padding: 0 0 20px 0;
 }
@@ -73,8 +72,16 @@ body{
 
 .campos{
     position: relative;
-    border-bottom: 2px solid silver;
-    margin:30px;
+    border-bottom: 2px solid rgb(255, 255, 255);
+    margin-bottom: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+
+::placeholder {
+    color: rgb(255, 255, 255);
+    opacity: 0.7;
 }
 
 .campos input {
@@ -82,35 +89,45 @@ body{
     padding: 0 10px;
     height: 40px;
     border: none;
-    font-size: 16px;
+    font-size: 20px;
     background: transparent;
     outline: none;
+    transition: 0.3s;
+    color: var(--background-color);
+}
+.campos input:focus {
+    padding: 3px 10px;
+    transition: 0.3s;
 }
 
 .boton button {
-    width: 100%;
+    width: 85%;
     height: 40px;
-    background: var(--primary-color);
+    background:#5a0ae5;
     color: var(--background-color);
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 20px;
+    font-size: 20px;
     cursor: pointer;
     transition: .3s;
-    margin-bottom: 10px;
+    box-shadow: black 0px 0px 10px 0px;
+    margin-left: 7.5%;
 }
 
 .boton button:hover {
-    background: var(--secondary-color);
+    width: 90%;
+    margin-left: 5%;
+    box-shadow: rgb(239, 160, 242) 0px 0px 10px 0px;
 }
 
 .registrarse {
     text-align: center;
     margin-top: 20px;
+    color: var(--background-color);
 }
 
 .registrarse a {
-    color: var(--primary-color);
+    color: rgb(87, 206, 246);
     text-decoration: none;
 }
 .registrarse a:hover {
