@@ -20,25 +20,33 @@ body{
     width: 100%;
 }
 
-.imagen {
+.bienvenida {
+    margin-left: auto;  
+    margin-right: auto;
     width: 100%;
-    height: 100%;
-    display: block;
-    position: absolute;
-    top: 10px;
-    left: 30%;
+    text-align: center;
 }
 
 .formulario {
     margin-left: auto;
     margin-right: auto;
-    position: relative;
-    transform: translateY(85%);
+    margin-top: -60px;
     padding: 20px;
     width: 400px;
     background: linear-gradient(to bottom, rgb(161, 23, 225), #5a0ae5);
     border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#form_regis {
+    margin-top: 100px;
+}
+
+#form_regis h2 {
+    text-align: center; 
+    padding-top: 0;
+    color: var(--background-color);
+    font-size: 40px;
 }
 
 .formulario h1 {
@@ -52,7 +60,6 @@ body{
     text-align: center; 
     padding: 8px 0 20px 0;
     border-bottom: 1px solid silver;
-    
 }
 
 .formulario form {
@@ -89,14 +96,14 @@ body{
     padding: 0 10px;
     height: 40px;
     border: none;
-    font-size: 20px;
+    font-size: 23px;
     background: transparent;
     outline: none;
     transition: 0.3s;
     color: var(--background-color);
 }
 .campos input:focus {
-    padding: 3px 10px;
+    padding: 4px 10px;
     transition: 0.3s;
 }
 
@@ -117,13 +124,18 @@ body{
 .boton button:hover {
     width: 90%;
     margin-left: 5%;
-    box-shadow: rgb(239, 160, 242) 0px 0px 10px 0px;
+    box-shadow: black 0px 0px 5px 0px;
 }
 
 .registrarse {
     text-align: center;
     margin-top: 20px;
     color: var(--background-color);
+}
+
+.registrarse p {
+    margin: 0;
+    font-size: 20px;
 }
 
 .registrarse a {
