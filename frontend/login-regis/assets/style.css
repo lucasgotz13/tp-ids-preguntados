@@ -63,8 +63,6 @@ body{
 }
 
 .formulario form {
-    padding-bottom: 10px;
-    box-sizing: border-box;
     padding-top: 5px;
 }
 
@@ -78,12 +76,8 @@ body{
 
 
 .campos{
-    position: relative;
     border-bottom: 2px solid rgb(255, 255, 255);
-    margin-bottom: 20px;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-top: 10px;
+    margin: 15px 30px;
 }
 
 ::placeholder {
@@ -108,6 +102,7 @@ body{
 }
 
 .boton button {
+    margin-left: 7.5%;
     width: 85%;
     height: 40px;
     background:#5a0ae5;
@@ -118,7 +113,6 @@ body{
     cursor: pointer;
     transition: .3s;
     box-shadow: black 0px 0px 10px 0px;
-    margin-left: 7.5%;
 }
 
 .boton button:hover {
