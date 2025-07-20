@@ -25,13 +25,13 @@
         <div class="field" >
             <label class="label">Pregunta:</label>
             <div class="control">
-                <input class="input" type="text" required placeholder="Tu pregunta..." />
+                <input class="input" type="text" id="pregunta" required placeholder="Tu pregunta..." />
             </div>
         </div>
 
         <div class="field has-addions" >
           <div class="control">
-            <span class="select">
+            <span class="select" id="selector_categoria">
               <select>
                 <option> Categoria </option>
                 <option> Deportes </option>
@@ -43,35 +43,120 @@
           </div>
         </div>
 
+        <div class="field has-addions" >
+          <div class="control">
+            <span class="select" id="selector_dificultad">
+              <select>
+                <option> Dificultad </option>
+                <option> Facil </option>
+                <option> Intermedio </option>
+                <option> Dificl </option>
+              </select>
+            </span>
+          </div>
+        </div>
+
         <div class="field ">
             <label class="label">Opción 1 (Correcta):</label>
             <div class="control">
-                <input class="input" type="text" required placeholder="A" />
+                <input class="input" type="text" id="respuesta_correcta" required placeholder="A" />
             </div>
         </div>
 
         <div class="field">
             <label class="label">Opción 2:</label>
             <div class="control">
-                <input class="input" type="text"required placeholder="B" />
+                <input class="input" type="text" id="respuesta_a"required placeholder="B" />
             </div>
         </div>
 
         <div class="field">
             <label class="label">Opción 3:</label>
             <div class="control">
-                <input class="input" type="text" required placeholder="C" />
+                <input class="input" type="text" id="respuesta_b" required placeholder="C" />
             </div>
         </div>
 
         <div class="field">
             <label class="label">Opción 4</label>
             <div class="control">
-                <input class="input" type="text" required placeholder="D" />
+                <input class="input" type="text" id="respuesta_c" required placeholder="D" />
             </div>
         </div>
 
-        <button class="button is-primary">Guardar pregunta</button>
+        <div class="notification is-warning is-light" id="mensaje_completar_datos">
+            Por favor, ingrese todos los datos.
+        </div>
+        <button class="button is-primary" id="boton_envio">Guardar pregunta</button>
     </div>
+
+    <script>
+        const mensaje=document.getElementById("mensaje_completar_datos");
+        mensaje.style.display="none";
+
+    document.getElementById("boton_envio").addEventListener("click", async function() {
+
+        const pregunta = document.getElementById("pregunta").value.trim();
+        const categoria = document.querySelector("#selector_categoria select").value.trim();
+        const dificultad= document.querySelector("#selector_dificultad select").value.trim();
+        const respuesta_correcta = document.getElementById("respuesta_correcta").value.trim();
+        const respuesta_a = document.getElementById("respuesta_a").value.trim();
+        const respuesta_b = document.getElementById("respuesta_b").value.trim();
+        const respuesta_c = document.getElementById("respuesta_c").value.trim();
+
+        if(!pregunta || categoria === "Categoria" || dificultad === "Dificultad" || !respuesta_correcta || !respuesta_a || !respuesta_b || !respuesta_c ){
+            mensaje.style.display="block";
+            return;
+        }
+        mensaje.style.display="none";
+
+
+        let puntos= 0;
+        
+        if(dificultad === "Facil"){
+            puntos=10;
+        }
+        else {
+            if(dificultad === "Intermedio" ){
+                puntos=20;
+            }
+            else{
+                puntos=30;
+            }
+        }
+
+            try{
+                const response= await fetch("http://localhost:3030/api/preguntas",{
+
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        pregunta: pregunta,
+                        categoria: categoria,
+                        dificultad: dificultad,
+                        puntos: puntos,
+                        respuesta_a: respuesta_a,
+                        respuesta_b: respuesta_b,
+                        respuesta_c: respuesta_c,
+                        respuesta_correcta: respuesta_correcta
+                    })
+                })
+                if (response.ok){
+                    alert("¡Pregunta guardada con éxito!");
+                    document.querySelector("form")?.reset();
+                }else{
+                    alert("No se pudo guardar la pregunta");
+                }
+               
+            }catch(error){
+                alert("error al guardar la pregunta");
+                console.error(error);
+            }
+        });
+
+    </script>
+
 </body>
 </html>
