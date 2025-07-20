@@ -42,7 +42,7 @@
                             <a class="navbar-item" href="../login-regis/index.html">
                                 Cambiar usuario
                             </a>
-                            <a class="navbar-item">
+                            <a class="navbar-item" id="eliminar_usuario">
                                 Eliminar usuario
                             </a>
                         </div>
@@ -130,5 +130,50 @@
                     </div>
             </div>
     </div>
+
+    <script>
+
+    document.getElementById("eliminar_usuario").addEventListener("click", async function(){
+
+        const confirmar = confirm("¿Estás seguro que deseas eliminar el usuario?");
+        if (!confirmar) return;
+
+        // 1. Obtener usuario del localStorage
+        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
+            alert("No se encontró el usuario para eliminar");
+            return;
+        }
+
+        //2.enviar peticion de delete
+        try {
+            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado[0].id)}`,{
+                method:"DELETE"
+            });
+
+            if(response.ok){
+                localStorage.removeItem("usuario");
+                alert("Usuario eliminado correctamente");
+                window.location.href= "../login-regis/index.html"
+
+            }else{
+                alert("No se pudo eliminar el usuario");
+            }
+
+        }catch(error){
+            alert("Error al eliminar el usuario");
+            console.error(error);
+        }
+        });
+
+
+
+
+
+
+    </script>
+
+
+
 </body>
 </html>

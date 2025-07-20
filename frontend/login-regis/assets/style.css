@@ -152,11 +152,20 @@ body{
     padding-bottom:20px;
     margin-left: 30px;
 }
-
-#mensaje_error{
+#mensaje_error_usuario{
     display:none;
     color: red;
     margin-top: -20px;
     padding-bottom:20px;
     margin-left: 30px;
 }
+
+#mensaje_error_edad{
+    display:none;
+    color: red;
+    margin-top: -20px;
+    padding-bottom:20px;
+    margin-left: 30px;
+}
+
+
