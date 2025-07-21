@@ -30,6 +30,7 @@
         </div>
 
         <div class="field has-addions" >
+            <label class="label">Categoria</label>
           <div class="control">
             <span class="select" id="selector_categoria">
               <select>
@@ -44,43 +45,56 @@
         </div>
 
         <div class="field has-addions" >
+            <label class="label">Dificultad</label>
           <div class="control">
             <span class="select" id="selector_dificultad">
               <select>
                 <option> Dificultad </option>
                 <option> Facil </option>
                 <option> Intermedio </option>
-                <option> Dificl </option>
+                <option> Dificil </option>
               </select>
             </span>
           </div>
         </div>
 
-        <div class="field ">
-            <label class="label">Opción 1 (Correcta):</label>
-            <div class="control">
-                <input class="input" type="text" id="respuesta_correcta" required placeholder="A" />
+        <div class="field">
+            <label class="label">Opción Correcta</label>
+            <!-- <div class="control">
+                <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
+            </div> -->
+            <div class="field has-addions" >
+                <div class="control">
+                    <span class="select" id="respuesta_correcta">
+                        <select>
+                            <option> Opciones </option>
+                            <option value="a"> A </option>
+                            <option value="b"> B </option>
+                            <option value="c"> C </option>
+                        </select>
+                    </span>
+                </div>
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 2:</label>
+            <label class="label">Opcion A:</label>
             <div class="control">
-                <input class="input" type="text" id="respuesta_a"required placeholder="B" />
+                <input class="input" type="text" id="respuesta_a"required placeholder="Opcion A" />
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 3:</label>
+            <label class="label">Opcion B:</label>
             <div class="control">
-                <input class="input" type="text" id="respuesta_b" required placeholder="C" />
+                <input class="input" type="text" id="respuesta_b" required placeholder="Opcion B" />
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 4</label>
+            <label class="label">Opcion C:</label>
             <div class="control">
-                <input class="input" type="text" id="respuesta_c" required placeholder="D" />
+                <input class="input" type="text" id="respuesta_c" required placeholder="Opcion C" />
             </div>
         </div>
 
@@ -91,6 +105,13 @@
     </div>
 
     <script>
+        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"))
+        setTimeout(() => {
+            if (usuarioGuardado == null) {
+                alert("No has iniciado sesion")
+                window.location.href = "../login-regis/index.html"
+            }
+        }, 200)
         const mensaje=document.getElementById("mensaje_completar_datos");
         mensaje.style.display="none";
 
@@ -99,12 +120,12 @@
         const pregunta = document.getElementById("pregunta").value.trim();
         const categoria = document.querySelector("#selector_categoria select").value.trim();
         const dificultad= document.querySelector("#selector_dificultad select").value.trim();
-        const respuesta_correcta = document.getElementById("respuesta_correcta").value.trim();
+        const respuesta_correcta = document.querySelector("#respuesta_correcta select").value.trim();
         const respuesta_a = document.getElementById("respuesta_a").value.trim();
         const respuesta_b = document.getElementById("respuesta_b").value.trim();
         const respuesta_c = document.getElementById("respuesta_c").value.trim();
 
-        if(!pregunta || categoria === "Categoria" || dificultad === "Dificultad" || !respuesta_correcta || !respuesta_a || !respuesta_b || !respuesta_c ){
+        if(!pregunta || categoria === "Categoria" || dificultad === "Dificultad" || respuesta_correcta === "Opciones" || !respuesta_correcta || !respuesta_a || !respuesta_b || !respuesta_c ){
             mensaje.style.display="block";
             return;
         }
@@ -137,6 +158,7 @@
                         categoria: categoria,
                         dificultad: dificultad,
                         puntos: puntos,
+                        id_usuario: usuarioGuardado[0].id,
                         respuesta_a: respuesta_a,
                         respuesta_b: respuesta_b,
                         respuesta_c: respuesta_c,
@@ -155,8 +177,8 @@
                 console.error(error);
             }
         });
-
     </script>
+
 
 </body>
 </html>

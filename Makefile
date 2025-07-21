@@ -3,3 +3,6 @@ run-db:
 
 run-backend:	
 	cd ./backend && npm run dev
+
+run-frontend:
+	cd ./frontend && http-server --cors
