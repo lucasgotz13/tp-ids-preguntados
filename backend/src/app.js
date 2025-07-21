@@ -82,6 +82,7 @@ app.post("/api/preguntas/", async (req, res) => {
         req.body.dificultad == null ||
         req.body.categoria == null ||
         req.body.puntos == null ||
+        req.body.id_usuario == null ||
         req.body.respuesta_a == null ||
         req.body.respuesta_b == null ||
         req.body.respuesta_c == null ||
@@ -98,7 +99,8 @@ app.post("/api/preguntas/", async (req, res) => {
             req.body.pregunta,
             req.body.dificultad,
             req.body.categoria,
-            req.body.puntos
+            req.body.puntos,
+            req.body.id_usuario
         );
         const response = await getIdFromPregunta(req.body.pregunta);
         await createRespuesta(

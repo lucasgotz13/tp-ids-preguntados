@@ -37,5 +37,14 @@
 
    </div>
 
+   <script>
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"))
+        setTimeout(() => {
+            if (usuarioGuardado == null) {
+                alert("No has iniciado sesion")
+                window.location.href = "../login-regis/index.html"
+            }
+        }, 200)
+   </script>
 </body>
 </html>

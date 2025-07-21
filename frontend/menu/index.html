@@ -39,6 +39,9 @@
                         </a>
 
                         <div class="navbar-dropdown">
+                            <a class="navbar-item" id="cerrar_sesion">
+                                Cerrar Sesión
+                            </a>
                             <a class="navbar-item" href="../login-regis/index.html">
                                 Cambiar usuario
                             </a>
@@ -133,6 +136,15 @@
 
     <script>
 
+    // Timeout para que espere un poquito antes de correr este codigo 
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+    setTimeout(function() {
+        if(usuarioGuardado == null){
+            alert("No has iniciado sesion");
+            window.location.href = "../login-regis/index.html"
+        }
+    }, 200);
+
     document.getElementById("eliminar_usuario").addEventListener("click", async function(){
 
         const confirmar = confirm("¿Estás seguro que deseas eliminar el usuario?");
@@ -166,7 +178,18 @@
         }
         });
 
+    // Cerrar la sesion
+    document.getElementById("cerrar_sesion").addEventListener("click", async function() {
+        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
+            alert("No se encontró el usuario");
+            return;
+        }
 
+        localStorage.removeItem("usuario");
+
+        window.location.href = "../login-regis/index.html"
+    })
 
 
 

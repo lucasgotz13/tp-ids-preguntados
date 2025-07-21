@@ -24,10 +24,10 @@ async function getPreguntaRespuestaById(id) {
     return response.rows;
 }
 
-async function createPregunta(pregunta, dificultad, categoria, puntos) {
+async function createPregunta(pregunta, dificultad, categoria, puntos, id_usuario = null) {
     await dbClient.query(
-        "INSERT INTO preguntas (pregunta, dificultad, categoria, puntos) VALUES ($1, $2, $3, $4)",
-        [pregunta, dificultad, categoria, puntos]
+        "INSERT INTO preguntas (pregunta, dificultad, categoria, puntos, id_usuario) VALUES ($1, $2, $3, $4, $5)",
+        [pregunta, dificultad, categoria, puntos, id_usuario]
     );
 }
 

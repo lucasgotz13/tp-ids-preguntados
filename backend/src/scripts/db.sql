@@ -6,12 +6,15 @@ CREATE TABLE usuarios (
     url_perfil VARCHAR(1000), 
     puntos_totales INT );
 
+
 CREATE TABLE preguntas (
     id SERIAL PRIMARY KEY, 
     pregunta VARCHAR(255), 
     dificultad VARCHAR(50), 
     categoria VARCHAR(50), 
-    puntos INT );
+    puntos INT,
+    id_usuario INT REFERENCES usuarios(id)
+    );
 
 create table respuestas (
     id SERIAL PRIMARY KEY, 
