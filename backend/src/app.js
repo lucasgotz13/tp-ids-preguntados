@@ -75,7 +75,6 @@ app.get("/api/preguntas/:id", async (req, res) => {
   http://localhost:3030/api/preguntas/  */
 
 // Crear una pregunta y la respuesta
-// TODO: Pensar si al final agregamos un campo tipo "creado_por" para completar los 5 campos
 app.post("/api/preguntas/", async (req, res) => {
     if (
         req.body.pregunta == null ||

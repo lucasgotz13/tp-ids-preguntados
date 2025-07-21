@@ -1,50 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-    <link rel="stylesheet" href="assets/style_juego.css">
-    <title>Trivia</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+        />
+        <link rel="stylesheet" href="assets/style_juego.css" />
+        <title>Trivia</title>
+    </head>
+    <body>
+        <div class="container" id="juego">
+            <div class="container">
+                <header>
+                    <div class="puntos_partida">
+                        <span class="puntos"> Puntos: 0 </span>
+                        <!-- <span class="tiempo"> Tiempo: 0 </span> -->
+                    </div>
+                </header>
+            </div>
 
-    <div class="container" id="juego">
-        <div class="container">
-            <header>
-                <div class="puntos_partida">
-                    <span class="puntos"> Puntos: 0 </span>
-                    <span class="tiempo"> Tiempo: 0 </span>
+            <div class="field">
+                <p class="t_pregunta" id="pregunta">Pregunta aca</p>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_a" value="a">A</button>
                 </div>
-            </header>
-        </div>
-
-        <div class="field">
-            <p class="t_pregunta" id="pregunta"> Pregunta aca </p>
-            <div class="control">
-                <button class="button is-rounded ">A</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">B</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">C</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">D</button>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_b" value="b">B</button>
+                </div>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_c" value="c">C</button>
+                </div>
+                <div class="control">
+                    <button class="button is-rounded" id="siguiente_pregunta">Siguiente pregunta</button>
+                </div>
             </div>
         </div>
 
-   </div>
+        <script>
+            const pregunta = document.querySelector("#pregunta");
+            const respuestaA = document.querySelector("#opcion_a");
+            const respuestaB = document.querySelector("#opcion_b");
+            const respuestaC = document.querySelector("#opcion_c");
+            const siguientePregunta = document.querySelector("#siguiente_pregunta")
+            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+            setTimeout(() => {
+                if (usuarioGuardado == null) {
+                    alert("No has iniciado sesion");
+                    window.location.href = "../login-regis/index.html";
+                }
+            }, 200);
+            const params = new URLSearchParams(window.location.search);
+            const categoria = params.get("categoria");
 
-   <script>
-    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"))
-        setTimeout(() => {
-            if (usuarioGuardado == null) {
-                alert("No has iniciado sesion")
-                window.location.href = "../login-regis/index.html"
+            async function getPreguntasByCategoria(categoria) {
+                try {
+                    const response = await fetch(
+                        "http://localhost:3030/api/preguntas"
+                    );
+                    const preguntas = await response.json();
+                    const preguntasFiltradas = preguntas
+                        .filter((pregunta) => pregunta.categoria === categoria)
+                        .sort(() => Math.random() - 0.5);
+                    return preguntasFiltradas;
+                } catch (e) {
+                    console.error("Error al encontrar las preguntas", error);
+                    return false;
+                }
             }
-        }, 200)
-   </script>
-</body>
+            let preguntasPOSTA;
+            getPreguntasByCategoria(categoria).then(preguntas => {
+                empezarJuego(preguntas)
+            })
+
+            async function chequearRespuesta(preguntasCategoria, respuesta_seleccionada) {
+            }
+
+            async function siguiente(preguntasCategoria, indPreguntaActual) {
+                pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
+                respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
+                // respuestaA.addEventListener("click", async (e) => {
+                //     console.log(e.target.value)
+                // })
+                respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
+                // respuestaB.addEventListener("click", async (e) => {
+                //     console.log(e.target.value)
+                // })
+                respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
+                // respuestaC.addEventListener("click", async (e) => {
+                //     console.log(e.target.value)
+                // })
+
+            }
+
+            async function empezarJuego(preguntasCategoria) {
+                let indPreguntaActual = 0;
+                if (!preguntasCategoria) {
+                    console.error("Hubo un error con las preguntas");
+                }
+                pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
+                respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
+                respuestaA.addEventListener("click", async (e) => {
+                    console.log(e.target.value)
+                })
+                respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
+                respuestaB.addEventListener("click", async (e) => {
+                    console.log(e.target.value)
+                })
+                respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
+                respuestaC.addEventListener("click", async (e) => {
+                    console.log(e.target.value)
+                })
+                siguientePregunta.addEventListener("click", (e) => {
+                    indPreguntaActual += 1;
+                    siguiente(preguntasCategoria, indPreguntaActual)
+                })
+            }
+
+        </script>
+    </body>
 </html>
