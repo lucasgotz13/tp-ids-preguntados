@@ -115,8 +115,8 @@
         const caja = document.querySelector(".box");
         const cajaPregunta = document.querySelector(".card");
         let preguntaId;
+        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
 
-        
         caja.style.display="none";
         mensaje.style.display="none";
         msg.style.display="none";
@@ -133,12 +133,24 @@
             }
 
             try {
-                const res = await fetch(`http://localhost:3030/api/preguntas/`);
+                const res = await fetch(`http://localhost:3030/api/preguntas/`, {
+                    method: "GET"
+                });
                 if (!res.ok) {
                     throw new Error("Error al obtener las preguntas");
                 }
-                const preguntas = await res.json();
+                let preguntas = await res.json();
+                const userId = usuarioGuardado.id;
 
+                preguntas = preguntas.filter(p => p.id_usuario === userId);
+                if (preguntas.length === 0) {
+                    msg.style.display = "block";
+                    msg.style.marginTop = "10px";
+                    setTimeout(() => {
+                        msg.style.display = "none";
+                    }, 3000);
+                    return;
+                }
                 const preguntaEncontrada = preguntas.find(p => p.pregunta === pregunta);
                 if (!preguntaEncontrada) {
                     msg.style.display = "block";
@@ -183,8 +195,18 @@
                 if (!res.ok) {
                     throw new Error("Error al obtener las preguntas");
                 }
-                const preguntas = await res.json();
+                let preguntas = await res.json();
+                const userId = usuarioGuardado.id;
 
+                preguntas = preguntas.filter(p => p.id_usuario === userId);
+                if (preguntas.length === 0) {
+                    msg.style.display = "block";
+                    msg.style.marginTop = "10px";
+                    setTimeout(() => {
+                        msg.style.display = "none";
+                    }, 3000);
+                    return;
+                }
                 const preguntaEncontrada = preguntas.find(p => p.pregunta === pregunta);
                 if (!preguntaEncontrada) {
                     msg.style.display = "block";
@@ -253,7 +275,6 @@
                 puntos = 30;
             }
         }
-
             try{
                 const response= await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`,{
 
