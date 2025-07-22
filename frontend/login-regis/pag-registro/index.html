@@ -14,6 +14,9 @@
             <p>¿Es tu primera vez jugando? Registrate.</p>
         </div>
         <div class ="formulario" id="form_regis">
+            <figure style="text-align:center;">
+                <img id="imagen_usuario"src="https://randomuser.me/api/portraits/men/32.jpg" alt="Perfil de usuario">
+            </figure>
             <h2>Crear cuenta</h2>
             <form method="post">
                 <div class="campos">
@@ -32,6 +35,9 @@
                  <div id="mensaje_error_edad">
                     Edad invalida
                 </div>
+                <div class="campos">
+                    <input type="url" id="foto_regis" placeholder="Link a tu foto de perfil (opcional)">
+                </div>
                 <div class="boton">
                     <button type="submit">Confirmar</button>
                 </div>
@@ -47,6 +53,7 @@
             const usuario=document.getElementById("usuario_regis").value.trim();
             const nombre=document.getElementById("nombre_regis").value.trim();
             const edad=parseInt(document.getElementById("edad_regis").value);
+            const urlPerfil=document.getElementById("foto_regis").value.trim();
 
             const divError_usuario=document.getElementById("mensaje_error_usuario");
             const divError_edad=document.getElementById("mensaje_error_edad");
@@ -57,6 +64,15 @@
                 return
             }
 
+            let urlPerfilFinal;
+            if (urlPerfil === "") {
+                urlPerfilFinal = "";
+            } else {
+                urlPerfilFinal = urlPerfil;
+                }
+
+
+
              try {
                 const response = await fetch("http://localhost:3030/api/usuarios", {
                     method: "POST",
@@ -66,7 +82,8 @@
                     body: JSON.stringify({
                         usuario: usuario,
                         nombre: nombre,
-                        edad: edad
+                        edad: edad,
+                        url_perfil: urlPerfilFinal
                     })
                     });
 
@@ -89,13 +106,30 @@
                 console.log("Usuario creado:", data.usuario);
                 alert("Usuario creado con éxito");
 
-                localStorage.setItem("usuario", JSON.stringify(data));
+                 try{
+                    const respuesta= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuario)}`);
 
-                window.location.href="../../menu/index.html";
+                    if (!respuesta.ok) {
+                        alert("El usuario no se encontró");
+                    return;
+                    }
+
+                    const usuario_guardado= await respuesta.json();
+
+                    localStorage.setItem("usuario", JSON.stringify(usuario_guardado));
+
+                    window.location.href="../../menu/index.html";
+
+
+                }catch(error){
+                    alert("Error al encontrar el usuario");
+                    console.error("error al encontrar usuario",error);
+                }
+
 
             }catch(error){
                 console.error("Error:", error);
-                divError.style.display="block";
+                alert("Error al crear usuario");
             }
         })
 

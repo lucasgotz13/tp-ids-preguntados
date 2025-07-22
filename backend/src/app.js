@@ -317,7 +317,7 @@ app.get("/api/usuarios/", async (req, res) => {
 // Crear un usuario
 app.post("/api/usuarios", async (req, res) => {
     const { nombre, usuario, edad, url_perfil, mejor_puntaje } = req.body;
-    if (nombre == null || usuario == null || edad == null) {
+    if (nombre == null || usuario == null || edad == null || url_perfil == null) {
         return res.status(400).json({
             status: false,
             mensaje: "Faltan datos para crear el usuario",
