@@ -41,6 +41,15 @@
     </div>
     
     <script>
+        const params = new URLSearchParams(window.location.search)
+        const usuario = params.get("usuario")
+        const nombre = params.get("nombre")
+        const edad = params.get("edad")
+        const urlPerfil = params.get("url_perfil")
+        document.getElementById("usuario_regis").value = usuario
+        document.getElementById("nombre_regis").value = nombre
+        document.getElementById("edad_regis").value = edad
+        document.getElementById("foto_regis").value = urlPerfil
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
         setTimeout(function() {
             if(usuarioGuardado == null){

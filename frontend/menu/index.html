@@ -48,10 +48,7 @@
                             <a class="navbar-item" id="cerrar_sesion">
                                 Cerrar Sesión
                             </a>
-                            <a class="navbar-item" href="../login-regis/index.html">
-                                Cambiar usuario
-                            </a>
-                            <a class="navbar-item" href="../editar_usuario/index.html">
+                            <a class="navbar-item" onclick="obtenerDatos()">
                                 Editar usuario
                             </a>
                             <a class="navbar-item" id="eliminar_usuario">
@@ -204,10 +201,6 @@
     // Cerrar la sesion
     document.getElementById("cerrar_sesion").addEventListener("click", async function() {
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
-            alert("No se encontró el usuario");
-            return;
-        }
 
         localStorage.removeItem("usuario");
 
@@ -215,7 +208,9 @@
     })
 
 
-
+    function obtenerDatos() {
+        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado[0].usuario}&nombre=${usuarioGuardado[0].nombre}&edad=${usuarioGuardado[0].edad}&url_perfil=${usuarioGuardado[0].url_perfil}`     
+    }
 
     </script>
 
