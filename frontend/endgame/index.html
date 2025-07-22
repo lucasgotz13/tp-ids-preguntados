@@ -35,7 +35,7 @@
 				<ol class="puestos">
 					<li class="p1" id="top1">Usuario1 - puntos</li>
 					<li class="p2" id="top2">Usuario2 - puntos</li>
-					<li class="p3" id="top3">Usuario3 - puntos</li>
+					<li class="p3" id="top3">Usuario3 - puntos</li>	
 				</ol>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 			const params = new URLSearchParams(window.location.search)
 			const puntos = params.get("puntos")
 
-            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario")); 
 				setTimeout(() => {
 					if (usuarioGuardado == null) {
 						alert("No has iniciado sesion");

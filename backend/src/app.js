@@ -68,6 +68,20 @@ app.get("/api/usuarios/id/:id",async (req,res) => {
     return res.status(200).json(response[0]);
 })
 
+app.get("/api/usuarios/id/:id",async (req,res) => {
+
+    const response= await getOneUser(req.params.id);
+    
+    if (response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "El usuario no fue encontrado",
+        });
+    }
+
+    return res.status(200).json(response);
+})
+
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
     const response = await getPreguntaRespuestaById(req.params.id);
