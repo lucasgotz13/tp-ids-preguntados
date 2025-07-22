@@ -59,6 +59,20 @@ html, body {
 .navbar.is-transparent {
     background-color: transparent ;
 }
+#div_logo{
+    padding: 10px;
+}
+#imagen_logo{
+    width: 90px; 
+    height: 90px; 
+    border-radius: 50%; 
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+#imagen_logo:hover {
+    transform: scale(1.08);
+}
 
 .navbar.is-transparent .navbar-item,
 .navbar.is-transparent .navbar-link,
