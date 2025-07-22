@@ -158,12 +158,12 @@ async function createUsuario(
     usuario,
     edad,
     url_perfil,
-    puntos_totales
+    mejor_puntaje
 ) {
     try {
         dbClient.query(
-            "INSERT INTO usuarios (nombre, usuario, edad, url_perfil, puntos_totales) VALUES ($1, $2, $3, $4, $5)",
-            [nombre, usuario, edad, url_perfil ?? "", puntos_totales ?? 0]
+            "INSERT INTO usuarios (nombre, usuario, edad, url_perfil, mejor_puntaje) VALUES ($1, $2, $3, $4, $5)",
+            [nombre, usuario, edad, url_perfil ?? "", mejor_puntaje ?? 0]
         );
         return true;
     } catch (e) {
@@ -178,12 +178,12 @@ async function updateUsuario(
     usuario,
     edad,
     url_perfil,
-    puntos_totales
+    mejor_puntaje
 ) {
     try {
         dbClient.query(
-            "UPDATE usuarios SET  nombre = $2, usuario = $3, edad = $4, url_perfil = $5, puntos_totales = $6 WHERE id = $1",
-            [id, nombre, usuario, edad, url_perfil, puntos_totales]
+            "UPDATE usuarios SET  nombre = $2, usuario = $3, edad = $4, url_perfil = $5, mejor_puntaje = $6 WHERE id = $1",
+            [id, nombre, usuario, edad, url_perfil, mejor_puntaje]
         );
         return true;
     } catch (e) {

@@ -54,6 +54,34 @@ app.get("/api/usuarios/:usuario",async (req,res) => {
     return res.status(200).json(response[0]);
 })
 
+app.get("/api/usuarios/id/:id",async (req,res) => {
+
+    const response= await getOneUser(req.params.id);
+    
+    if (response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "El usuario no fue encontrado",
+        });
+    }
+
+    return res.status(200).json(response[0]);
+})
+
+app.get("/api/usuarios/id/:id",async (req,res) => {
+
+    const response= await getOneUser(req.params.id);
+    
+    if (response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "El usuario no fue encontrado",
+        });
+    }
+
+    return res.status(200).json(response);
+})
+
 // Obtener una pregunta (usando el id)
 app.get("/api/preguntas/:id", async (req, res) => {
     const response = await getPreguntaRespuestaById(req.params.id);
@@ -76,6 +104,7 @@ app.get("/api/preguntas/:id", async (req, res) => {
 
 // Crear una pregunta y la respuesta
 app.post("/api/preguntas/", async (req, res) => {
+    console.log(req.body)
     if (
         req.body.pregunta == null ||
         req.body.dificultad == null ||
@@ -268,7 +297,7 @@ app.get("/api/usuarios/", async (req, res) => {
 
 // Crear un usuario
 app.post("/api/usuarios", async (req, res) => {
-    const { nombre, usuario, edad, url_perfil, puntos_totales } = req.body;
+    const { nombre, usuario, edad, url_perfil, mejor_puntaje } = req.body;
     if (nombre == null || usuario == null || edad == null) {
         return res.status(400).json({
             status: false,
@@ -295,7 +324,7 @@ app.post("/api/usuarios", async (req, res) => {
         usuario,
         edad,
         url_perfil,
-        puntos_totales
+        mejor_puntaje
     );
     if (!response) {
         return res.status(400).json({
@@ -303,20 +332,20 @@ app.post("/api/usuarios", async (req, res) => {
             mensaje: "Hubo un error al crear el usuario",
         });
     }
-    return res.status(201).json({ status: true, mensaje: "Usuario creado" });
+    return res.status(201).json({ status: true, mensaje: "Usuario creado", usuario: {nombre: nombre, usuario: usuario, edad: edad, url_perfil: url_perfil, mejor_puntaje: mejor_puntaje} });
 });
 
 // Actualizar un usuario
 app.put("/api/usuarios/:id", async (req, res) => {
     const id = req.params.id;
-    const { nombre, usuario, edad, url_perfil, puntos_totales } = req.body;
+    const { nombre, usuario, edad, url_perfil, mejor_puntaje } = req.body;
     if (
         id == undefined ||
         nombre == null ||
         usuario == null ||
         edad == null ||
         url_perfil == null ||
-        puntos_totales == null
+        mejor_puntaje == null
     ) {
         return res
             .status(400)
@@ -340,7 +369,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
             usuario,
             edad,
             url_perfil,
-            puntos_totales
+            mejor_puntaje
         );
         if (!response) {
             return res.status(400).json({
@@ -354,7 +383,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
             usuario: usuario,
             edad: edad,
             url_perfil: url_perfil,
-            puntos_totales: puntos_totales
+            mejor_puntaje: mejor_puntaje
         });
     }else{ //compruebo si el nombre de usuario ya existe
         const existe= await getOneUserByUsuario(usuario);
@@ -370,7 +399,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
             usuario,
             edad,
             url_perfil,
-            puntos_totales
+            mejor_puntaje
         );
         if (!response) {
             return res.status(400).json({
@@ -384,7 +413,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
             usuario: usuario,
             edad: edad,
             url_perfil: url_perfil,
-            puntos_totales: puntos_totales
+            mejor_puntaje: mejor_puntaje
         });
 
 

@@ -76,7 +76,8 @@
             const edad=parseInt(document.getElementById("edad_regis").value);
             const fotoInput=document.getElementById("foto_regis").value.trim();
             const id = usuarioGuardado.id;  
-            const puntos_totales = usuarioGuardado.puntos_totales;
+            const mejor_puntaje = usuarioGuardado.mejor_puntaje;
+
 
             
             const divError_usuario=document.getElementById("mensaje_error_usuario");
@@ -114,7 +115,7 @@
                         nombre: nombre,
                         edad: edad,
                         url_perfil: foto, // Se envía el link de la foto
-                        puntos_totales: puntos_totales
+                        mejor_puntaje: mejor_puntaje
                     })
                 });
 
