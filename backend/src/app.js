@@ -25,6 +25,9 @@ const {
     getUsuarios,
     getOneUserByUsuario,
     updateRespuesta,
+    updatePreguntaYRespuestas,
+    getPreguntasByIdUsuario
+
 } = require("./scripts/connectidb.js");
 
 // Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
@@ -38,6 +41,22 @@ app.get("/api/preguntas/", async (req, res) => {
     }
     res.status(200).json(response);
 });
+// Obtener todas las preguntas y respuestas creadas por un usuario
+app.get("/preguntas/:id",async(req,res)=>{
+    const response= await getPreguntasByIdUsuario(req.params.id);
+
+    if(response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "No se encontraron preguntas creadas por el usuario",
+        });
+    }
+
+
+    return res.status(200).json(response);
+
+})
+
 
 // obtener usuario buscando por usuario
 app.get("/api/usuarios/:usuario",async (req,res) => {
@@ -218,7 +237,7 @@ app.put("/api/respuestas/:id", async (req, res) => {
   http://localhost:3030/api/respuestas/  */
 
 // Modificar la pregunta
-app.put("/api/preguntas/:id", async (req, res) => {
+/*app.put("/api/preguntas/:id", async (req, res) => {
     if (
         req.body.pregunta == null ||
         req.body.dificultad == null ||
@@ -250,7 +269,7 @@ app.put("/api/preguntas/:id", async (req, res) => {
             mensaje: "No se pudo modificar la pregunta",
         });
     }
-});
+});*/
 
 // Borrar la pregunta
 app.delete("/api/preguntas/:id", async (req, res) => {
@@ -445,6 +464,25 @@ app.delete("/api/usuarios/:id", async (req, res) => {
     });
 });
 
+app.put("/api/preguntas/:id", async (req, res) => {
+  const { pregunta, dificultad, categoria, puntos,
+          respuesta_a, respuesta_b, respuesta_c, respuesta_correcta } = req.body;
+  if (!pregunta || !dificultad || !categoria || !puntos ||
+      !respuesta_a || !respuesta_b || !respuesta_c || !respuesta_correcta) {
+    return res.status(400).json({ status:false, mensaje: "Faltan datos" });
+  }
+  try {
+    await updatePreguntaYRespuestas(
+      req.params.id,
+      pregunta, dificultad, categoria, puntos,
+      respuesta_a, respuesta_b, respuesta_c, respuesta_correcta
+    );
+    return res.status(200).json({ status:true, mensaje:"Pregunta y respuestas actualizadas" });
+  } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status:false, mensaje:"Error en servidor" });
+  }
+});
 
 app.listen(port, () => {
     console.log("Listening on port", port);
