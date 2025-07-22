@@ -46,6 +46,17 @@ async function getIdFromPregunta(pregunta) {
     return response.rows;
 }
 
+// conseguir todas las preguntas creadas por el usuario 
+
+async function getPreguntasByIdUsuario(id){
+    const response =await dbClient.query(
+        "SELECT * FROM preguntas, respuestas where preguntas.id = respuestas.id_pregunta AND preguntas.id_usuario= $1",
+        [id]
+    );
+    return response.rows;
+
+}
+
 async function deleteRespuestaFromPreguntaId(id_pregunta) {
     try {
         const result = await dbClient.query(
@@ -247,5 +258,6 @@ module.exports = {
     getAllPreguntasRespuestas,
     getIdFromPregunta,
     getOneUserByUsuario,
-    updatePreguntaYRespuestas
+    updatePreguntaYRespuestas,
+    getPreguntasByIdUsuario
 };

@@ -25,7 +25,8 @@ const {
     getUsuarios,
     getOneUserByUsuario,
     updateRespuesta,
-    updatePreguntaYRespuestas
+    updatePreguntaYRespuestas,
+    getPreguntasByIdUsuario
 } = require("./scripts/connectidb.js");
 
 // Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)
@@ -39,6 +40,22 @@ app.get("/api/preguntas/", async (req, res) => {
     }
     res.status(200).json(response);
 });
+// Obtener todas las preguntas y respuestas creadas por un usuario
+app.get("/preguntas/:id",async(req,res)=>{
+    const response= await getPreguntasByIdUsuario(req.params.id);
+
+    if(response.length == 0){
+        return res.status(404).json({
+            status: false,
+            mensaje: "No se encontraron preguntas creadas por el usuario",
+        });
+    }
+
+
+    return res.status(200).json(response);
+
+})
+
 
 // obtener usuario buscando por usuario
 app.get("/api/usuarios/:usuario",async (req,res) => {

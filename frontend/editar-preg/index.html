@@ -107,6 +107,7 @@
     </div>
 
     <script>
+            
 
         // Variables de referencia a los elementos del html
         const preguntaInput = document.getElementById("pregunta_a_modificar");
@@ -116,6 +117,8 @@
         const cajaPregunta = document.querySelector(".card");
         let preguntaId;
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+
+        
 
         caja.style.display="none";
         mensaje.style.display="none";
@@ -133,33 +136,18 @@
             }
 
             try {
-                const res = await fetch(`http://localhost:3030/api/preguntas/`, {
-                    method: "GET"
-                });
+
+                const res = await fetch(`http://localhost:3030/preguntas/${encodeURIComponent(usuarioGuardado[0].id)}`);
+
+               
+                   
                 if (!res.ok) {
                     throw new Error("Error al obtener las preguntas");
                 }
                 let preguntas = await res.json();
-                const userId = usuarioGuardado.id;
+                console.log(preguntas);
 
-                preguntas = preguntas.filter(p => p.id_usuario === userId);
-                if (preguntas.length === 0) {
-                    msg.style.display = "block";
-                    msg.style.marginTop = "10px";
-                    setTimeout(() => {
-                        msg.style.display = "none";
-                    }, 3000);
-                    return;
-                }
-                const preguntaEncontrada = preguntas.find(p => p.pregunta === pregunta);
-                if (!preguntaEncontrada) {
-                    msg.style.display = "block";
-                    msg.style.marginTop = "10px";
-                    setTimeout(() => {
-                    msg.style.display = "none";
-                }, 3000);
-                    return;
-                }
+                
 
                 preguntaId = preguntaEncontrada.id;
                 document.getElementById("pregunta").value = preguntaEncontrada.pregunta;
