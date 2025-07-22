@@ -46,6 +46,18 @@ html, body {
     color : var(--tertiary-color);
 }
 
+.table th, .table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    color: var(--primary-color);
+}
+.table tr {
+    background-color:#39688f; 
+}
+.table th {
+    background-color: #99b9f5; 
+}
 
 .control :placeholder {
     color: var(--tertiary-color);
