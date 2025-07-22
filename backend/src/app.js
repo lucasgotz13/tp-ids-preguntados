@@ -324,24 +324,77 @@ app.put("/api/usuarios/:id", async (req, res) => {
             .status(400)
             .json({ status: false, mensaje: "Faltan datos para el usuario" });
     }
-    const response = await updateUsuario(
-        id,
-        nombre,
-        usuario,
-        edad,
-        url_perfil,
-        puntos_totales
-    );
-    if (!response) {
-        return res.status(400).json({
-            status: false,
-            mensaje: "Hubo un error al actualizar el usuario",
+    
+    // comprobar edad valida
+       if (edad < 0 || edad > 100) return res.status(400).json({
+        status: false,
+        mensajeEdad: "La edad no es valida"
+        })
+
+    // comprobar si el usuario va a ser el mismo
+
+    const usuarioAnterior= await getOneUser(id);
+
+    if( usuarioAnterior.length >0 && usuarioAnterior[0].usuario === usuario ){
+        const response = await updateUsuario(
+            id,
+            nombre,
+            usuario,
+            edad,
+            url_perfil,
+            puntos_totales
+        );
+        if (!response) {
+            return res.status(400).json({
+                status: false,
+                mensaje: "Hubo un error al actualizar el usuario",
+            });
+        }
+        return res.status(200).json({
+            id: id,
+            nombre: nombre,
+            usuario: usuario,
+            edad: edad,
+            url_perfil: url_perfil,
+            puntos_totales: puntos_totales
         });
-    }
-    return res.status(200).json({
-        status: true,
-        mensaje: "El usuario ha sido actualizado correctamente",
-    });
+    }else{ //compruebo si el nombre de usuario ya existe
+        const existe= await getOneUserByUsuario(usuario);
+
+        if (existe.length != 0) return res.status(400).json({
+            status: false,
+            mensajeUsuario: "El usuario ya existe"
+        });
+
+        const response = await updateUsuario(
+            id,
+            nombre,
+            usuario,
+            edad,
+            url_perfil,
+            puntos_totales
+        );
+        if (!response) {
+            return res.status(400).json({
+                status: false,
+                mensaje: "Hubo un error al actualizar el usuario",
+            });
+        }
+        return res.status(200).json({
+            id: id,
+            nombre: nombre,
+            usuario: usuario,
+            edad: edad,
+            url_perfil: url_perfil,
+            puntos_totales: puntos_totales
+        });
+
+
+        }
+    
+    
+    
+    
 });
 
 // Borrar un usuario

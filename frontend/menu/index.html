@@ -14,6 +14,12 @@
     <div class = "container" id="fondo">
         <!--empieza encabezado de bulma-->
         <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+
+            <div id="div_logo">
+                <figure style="text-align:center;">
+                    <img id="imagen_logo" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Perfil de usuario">
+                </figure>
+            </div>
             <div class="navbar-brand">
                 <a class="navbar-item" href="../login-regis/index.html">
                     <h1 class="title is-4" id="quiz">Quiz City</h1>
@@ -45,8 +51,8 @@
                             <a class="navbar-item" id="cerrar_sesion">
                                 Cerrar Sesión
                             </a>
-                            <a class="navbar-item" href="../login-regis/index.html">
-                                Cambiar usuario
+                            <a class="navbar-item" onclick="obtenerDatos()">
+                                Editar usuario
                             </a>
                             <a class="navbar-item" id="eliminar_usuario">
                                 Eliminar usuario
@@ -148,6 +154,20 @@
         }
     }, 200);
 
+        let urlFoto = "";
+        if (Array.isArray(usuarioGuardado)) {
+            urlFoto = usuarioGuardado[0]?.url_perfil || usuarioGuardado[0]?.foto || "";
+        } else if (usuarioGuardado) {
+            urlFoto = usuarioGuardado.url_perfil || usuarioGuardado.foto || "";
+        }
+
+        if(urlFoto && urlFoto !== ""){
+            document.getElementById("imagen_logo").src = urlFoto;
+        } 
+
+
+
+
     document.getElementById("eliminar_usuario").addEventListener("click", async function(){
 
         const confirmar = confirm("¿Estás seguro que deseas eliminar el usuario?");
@@ -184,10 +204,6 @@
     // Cerrar la sesion
     document.getElementById("cerrar_sesion").addEventListener("click", async function() {
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
-            alert("No se encontró el usuario");
-            return;
-        }
 
         localStorage.removeItem("usuario");
 
@@ -195,7 +211,9 @@
     })
 
 
-
+    function obtenerDatos() {
+        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado[0].usuario}&nombre=${usuarioGuardado[0].nombre}&edad=${usuarioGuardado[0].edad}&url_perfil=${usuarioGuardado[0].url_perfil}`     
+    }
 
     </script>
 
