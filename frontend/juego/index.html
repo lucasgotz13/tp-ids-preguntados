@@ -16,7 +16,6 @@
                 <header>
                     <div class="puntos_partida">
                         <span class="puntos" id="puntos"> Puntos: 0 </span>
-                        <!-- <span class="tiempo"> Tiempo: 0 </span> -->
                     </div>
                 </header>
             </div>
@@ -91,7 +90,6 @@
             })
 
             async function chequearRespuesta(e, preguntasCategoria, indPreguntaActual) {
-                console.log(e.currentTarget.value);
                 if (preguntasCategoria[indPreguntaActual].respuesta_correcta === e.currentTarget.value) {
                     e.currentTarget.classList.add("correcta")
                     puntos += preguntasCategoria[indPreguntaActual].puntos
@@ -108,7 +106,6 @@
 
             async function siguientePregunta(preguntasCategoria, indPreguntaActual) {
                 if (indPreguntaActual === preguntasCategoria.length) {
-                    console.log("FIN")
                     window.location.href = `../endgame/index.html?puntos=${puntos}`
                     return
                 }
