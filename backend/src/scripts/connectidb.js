@@ -260,4 +260,5 @@ module.exports = {
     getOneUserByUsuario,
     updatePreguntaYRespuestas,
     getPreguntasByIdUsuario
+
 };

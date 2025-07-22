@@ -27,6 +27,7 @@ const {
     updateRespuesta,
     updatePreguntaYRespuestas,
     getPreguntasByIdUsuario
+
 } = require("./scripts/connectidb.js");
 
 // Obtener todas las preguntas y sus respuestas (TIENEN QUE TENER RESPUESTAS)

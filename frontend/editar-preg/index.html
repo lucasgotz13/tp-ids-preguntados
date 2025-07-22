@@ -107,8 +107,6 @@
     </div>
 
     <script>
-            
-
         // Variables de referencia a los elementos del html
         const preguntaInput = document.getElementById("pregunta_a_modificar");
         const mensaje=document.getElementById("mensaje_completar_datos");
@@ -117,9 +115,7 @@
         const cajaPregunta = document.querySelector(".card");
         let preguntaId;
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-
-        
-
+      
         caja.style.display="none";
         mensaje.style.display="none";
         msg.style.display="none";
@@ -140,11 +136,12 @@
                 const res = await fetch(`http://localhost:3030/preguntas/${encodeURIComponent(usuarioGuardado[0].id)}`);
 
                
-                   
+                  
                 if (!res.ok) {
                     throw new Error("Error al obtener las preguntas");
                 }
                 let preguntas = await res.json();
+
                 console.log(preguntas);
 
                 
