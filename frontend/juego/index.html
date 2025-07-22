@@ -15,7 +15,7 @@
             <div class="container">
                 <header>
                     <div class="puntos_partida">
-                        <span class="puntos"> Puntos: 0 </span>
+                        <span class="puntos" id="puntos"> Puntos: 0 </span>
                         <!-- <span class="tiempo"> Tiempo: 0 </span> -->
                     </div>
                 </header>
@@ -39,11 +39,13 @@
         </div>
 
         <script>
+            let puntos = 0;
             const pregunta = document.querySelector("#pregunta");
             const respuestaA = document.querySelector("#opcion_a");
             const respuestaB = document.querySelector("#opcion_b");
             const respuestaC = document.querySelector("#opcion_c");
-            const siguientePregunta = document.querySelector("#siguiente_pregunta")
+            const elPuntos = document.querySelector("#puntos")
+            const botonSiguientePregunta = document.querySelector("#siguiente_pregunta")
             const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
             setTimeout(() => {
                 if (usuarioGuardado == null) {
@@ -60,6 +62,10 @@
                         "http://localhost:3030/api/preguntas"
                     );
                     const preguntas = await response.json();
+                    if (categoria == null) {
+                        const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5)
+                        return preguntasRandomizadas;
+                    }
                     const preguntasFiltradas = preguntas
                         .filter((pregunta) => pregunta.categoria === categoria)
                         .sort(() => Math.random() - 0.5);
@@ -69,29 +75,45 @@
                     return false;
                 }
             }
-            let preguntasPOSTA;
             getPreguntasByCategoria(categoria).then(preguntas => {
                 empezarJuego(preguntas)
             })
 
-            async function chequearRespuesta(preguntasCategoria, respuesta_seleccionada) {
+            async function chequearRespuesta(e, preguntasCategoria, indPreguntaActual) {
+                console.log(e.currentTarget.value);
+                if (preguntasCategoria[indPreguntaActual].respuesta_correcta === e.currentTarget.value) {
+                    e.currentTarget.classList.add("correcta")
+                    puntos += preguntasCategoria[indPreguntaActual].puntos
+                    console.log(puntos)
+                    elPuntos.innerHTML = `Puntos: ${puntos}`
+                } else {
+                    e.currentTarget.classList.add("incorrecta")
+                    document.querySelector("#opcion_"+preguntasCategoria[indPreguntaActual].respuesta_correcta).classList.add("correcta") 
+                }
+                respuestaA.classList.add("deshabilitar") 
+                respuestaB.classList.add("deshabilitar") 
+                respuestaC.classList.add("deshabilitar") 
             }
 
-            async function siguiente(preguntasCategoria, indPreguntaActual) {
+            async function siguientePregunta(preguntasCategoria, indPreguntaActual) {
+                if (indPreguntaActual === preguntasCategoria.length) {
+                    console.log("FIN")
+                    window.location.href = `../endgame/index.html?puntos=${puntos}`
+                    return
+                }
+                respuestaA.classList.remove("deshabilitar") 
+                respuestaB.classList.remove("deshabilitar") 
+                respuestaC.classList.remove("deshabilitar") 
                 pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
                 respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
-                // respuestaA.addEventListener("click", async (e) => {
-                //     console.log(e.target.value)
-                // })
+                respuestaA.classList.remove("correcta")
+                respuestaA.classList.remove("incorrecta")
                 respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
-                // respuestaB.addEventListener("click", async (e) => {
-                //     console.log(e.target.value)
-                // })
+                respuestaB.classList.remove("correcta")
+                respuestaB.classList.remove("incorrecta")
                 respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
-                // respuestaC.addEventListener("click", async (e) => {
-                //     console.log(e.target.value)
-                // })
-
+                respuestaC.classList.remove("correcta")
+                respuestaC.classList.remove("incorrecta")
             }
 
             async function empezarJuego(preguntasCategoria) {
@@ -102,19 +124,19 @@
                 pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
                 respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
                 respuestaA.addEventListener("click", async (e) => {
-                    console.log(e.target.value)
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
                 })
                 respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
                 respuestaB.addEventListener("click", async (e) => {
-                    console.log(e.target.value)
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
                 })
                 respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
                 respuestaC.addEventListener("click", async (e) => {
-                    console.log(e.target.value)
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
                 })
-                siguientePregunta.addEventListener("click", (e) => {
+                botonSiguientePregunta.addEventListener("click", (e) => {
                     indPreguntaActual += 1;
-                    siguiente(preguntasCategoria, indPreguntaActual)
+                    siguientePregunta(preguntasCategoria, indPreguntaActual)
                 })
             }
 
