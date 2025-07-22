@@ -91,7 +91,7 @@
         <!--tarjetas categoria con bulma-->
         <div class="columns is-multiline is-centered"> 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="deportes" onclick= "location.href='/juego/index.html'">
+                <div class="card clickable-card" id="deportes" onclick= "location.href='/juego/index.html?categoria=Deportes'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/deporte.jpg" >
@@ -104,7 +104,7 @@
             </div>
 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="mundi" onclick= "location.href='/juego/index.html'">
+                <div class="card clickable-card" id="mundi" onclick= "location.href='/juego/index.html?categoria=Mundi'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/mundi.jpg">
@@ -117,7 +117,7 @@
             </div>
 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="cine" onclick= "location.href='/juego/index.html'">
+                <div class="card clickable-card" id="cine" onclick= "location.href='/juego/index.html?categoria=Cine'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/cine.jpg">
@@ -154,19 +154,13 @@
         }
     }, 200);
 
-        let urlFoto = "";
-        if (Array.isArray(usuarioGuardado)) {
-            urlFoto = usuarioGuardado[0]?.url_perfil || usuarioGuardado[0]?.foto || "";
-        } else if (usuarioGuardado) {
-            urlFoto = usuarioGuardado.url_perfil || usuarioGuardado.foto || "";
-        }
+    // Si el usuario tiene foto de perfil, la usa.
+       
+        const urlFoto = usuarioGuardado.url_perfil 
 
         if(urlFoto && urlFoto !== ""){
             document.getElementById("imagen_logo").src = urlFoto;
         } 
-
-
-
 
     document.getElementById("eliminar_usuario").addEventListener("click", async function(){
 
@@ -175,14 +169,14 @@
 
         // 1. Obtener usuario del localStorage
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
+        if(!usuarioGuardado || !usuarioGuardado.usuario){
             alert("No se encontró el usuario para eliminar");
             return;
         }
 
         //2.enviar peticion de delete
         try {
-            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado[0].id)}`,{
+            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado.id)}`,{
                 method:"DELETE"
             });
 
@@ -212,7 +206,7 @@
 
 
     function obtenerDatos() {
-        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado[0].usuario}&nombre=${usuarioGuardado[0].nombre}&edad=${usuarioGuardado[0].edad}&url_perfil=${usuarioGuardado[0].url_perfil}`     
+        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado.usuario}&nombre=${usuarioGuardado.nombre}&edad=${usuarioGuardado.edad}&url_perfil=${usuarioGuardado.url_perfil}`     
     }
 
     </script>

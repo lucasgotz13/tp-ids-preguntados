@@ -1,50 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-    <link rel="stylesheet" href="assets/style_juego.css">
-    <title>Trivia</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+        />
+        <link rel="stylesheet" href="assets/style_juego.css" />
+        <title>Trivia</title>
+    </head>
+    <body>
+        <div class="container" id="nav_juego">
+            <div class="container">
+                <header>
+                    <div class="puntos_partida">
+                        <span class="puntos" id="puntos"> Puntos: 0 </span>
+                    </div>
+                </header>
+            </div>
 
-    <div class="container" id="juego">
-        <div class="container">
-            <header>
-                <div class="puntos_partida">
-                    <span class="puntos"> Puntos: 0 </span>
-                    <span class="tiempo"> Tiempo: 0 </span>
+            <div id="loading" class="field loading-component">
+                <div class="control">
+                    <p class="t_pregunta">Cargando...</p>
                 </div>
-            </header>
+            </div>
+
+            <div class="field" id="div_juego">
+                <p class="t_pregunta" id="pregunta"></p>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_a" value="a"></button>
+                </div>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_b" value="b"></button>
+                </div>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_c" value="c"></button>
+                </div>
+                <div class="control">
+                    <button class="button is-rounded" id="siguiente_pregunta">Siguiente pregunta</button>
+                </div>
+            </div>
         </div>
 
-        <div class="field">
-            <p class="t_pregunta" id="pregunta"> Pregunta aca </p>
-            <div class="control">
-                <button class="button is-rounded ">A</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">B</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">C</button>
-            </div>
-            <div class="control">
-                <button class="button is-rounded">D</button>
-            </div>
-        </div>
+        <script>
+            let puntos = 0;
+            const pregunta = document.querySelector("#pregunta");
+            const respuestaA = document.querySelector("#opcion_a");
+            const respuestaB = document.querySelector("#opcion_b");
+            const respuestaC = document.querySelector("#opcion_c");
+            const elPuntos = document.querySelector("#puntos")
+            const botonSiguientePregunta = document.querySelector("#siguiente_pregunta")
+            const divJuego = document.querySelector("#div_juego")
+            const divLoading = document.querySelector("#loading")
+            divJuego.style = "display: none;"
 
-   </div>
+            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+            setTimeout(() => {
+                if (usuarioGuardado == null) {
+                    alert("No has iniciado sesion");
+                    window.location.href = "../login-regis/index.html";
+                }
+            }, 200);
+            const params = new URLSearchParams(window.location.search);
+            const categoria = params.get("categoria");
 
-   <script>
-    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"))
-        setTimeout(() => {
-            if (usuarioGuardado == null) {
-                alert("No has iniciado sesion")
-                window.location.href = "../login-regis/index.html"
+            async function getPreguntasByCategoria(categoria) {
+                try {
+                    const response = await fetch(
+                        "http://localhost:3030/api/preguntas"
+                    );
+                    const preguntas = await response.json();
+                    divJuego.style = "display: block;"
+                    divLoading.style = "display: none;"
+                    if (categoria == null) {
+                        const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5)
+                        return preguntasRandomizadas;
+                    }
+                    const preguntasFiltradas = preguntas
+                        .filter((pregunta) => pregunta.categoria === categoria)
+                        .sort(() => Math.random() - 0.5);
+                    return preguntasFiltradas;
+                } catch (e) {
+                    console.error("Error al encontrar las preguntas", error);
+                    return false;
+                }
             }
-        }, 200)
-   </script>
-</body>
+            getPreguntasByCategoria(categoria).then(preguntas => {
+                empezarJuego(preguntas)
+            })
+
+            async function chequearRespuesta(e, preguntasCategoria, indPreguntaActual) {
+                if (preguntasCategoria[indPreguntaActual].respuesta_correcta === e.currentTarget.value) {
+                    e.currentTarget.classList.add("correcta")
+                    puntos += preguntasCategoria[indPreguntaActual].puntos
+                    console.log(puntos)
+                    elPuntos.innerHTML = `Puntos: ${puntos}`
+                } else {
+                    e.currentTarget.classList.add("incorrecta")
+                    document.querySelector("#opcion_"+preguntasCategoria[indPreguntaActual].respuesta_correcta).classList.add("correcta") 
+                }
+                respuestaA.classList.add("deshabilitar") 
+                respuestaB.classList.add("deshabilitar") 
+                respuestaC.classList.add("deshabilitar") 
+            }
+
+            async function siguientePregunta(preguntasCategoria, indPreguntaActual) {
+                if (indPreguntaActual === preguntasCategoria.length) {
+                    window.location.href = `../endgame/index.html?puntos=${puntos}`
+                    return
+                }
+                respuestaA.classList.remove("deshabilitar") 
+                respuestaB.classList.remove("deshabilitar") 
+                respuestaC.classList.remove("deshabilitar") 
+                pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
+                respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
+                respuestaA.classList.remove("correcta")
+                respuestaA.classList.remove("incorrecta")
+                respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
+                respuestaB.classList.remove("correcta")
+                respuestaB.classList.remove("incorrecta")
+                respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
+                respuestaC.classList.remove("correcta")
+                respuestaC.classList.remove("incorrecta")
+            }
+
+            async function empezarJuego(preguntasCategoria) {
+                let indPreguntaActual = 0;
+                if (!preguntasCategoria) {
+                    console.error("Hubo un error con las preguntas");
+                }
+                pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
+                respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
+                respuestaA.addEventListener("click", async (e) => {
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
+                })
+                respuestaB.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_b}`
+                respuestaB.addEventListener("click", async (e) => {
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
+                })
+                respuestaC.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_c}`
+                respuestaC.addEventListener("click", async (e) => {
+                    chequearRespuesta(e, preguntasCategoria, indPreguntaActual)
+                })
+                botonSiguientePregunta.addEventListener("click", (e) => {
+                    indPreguntaActual += 1;
+                    siguientePregunta(preguntasCategoria, indPreguntaActual)
+                })
+            }
+
+        </script>
+    </body>
 </html>
