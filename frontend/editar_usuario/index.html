@@ -59,12 +59,7 @@
         }, 200);
 
         // Si usuarioGuardado es un array, usa [0], si es un objeto, accede directo
-        let urlFoto = "";
-        if (Array.isArray(usuarioGuardado)) {
-            urlFoto = usuarioGuardado[0]?.url_perfil || usuarioGuardado[0]?.foto || "";
-        } else if (usuarioGuardado) {
-            urlFoto = usuarioGuardado.url_perfil || usuarioGuardado.foto || "";
-        }
+        const urlFoto = usuarioGuardado.url_perfil;
 
         if(urlFoto && urlFoto !== ""){
             document.getElementById("imagen_usuario").src = urlFoto;
@@ -80,8 +75,8 @@
             const nombre=document.getElementById("nombre_regis").value.trim();
             const edad=parseInt(document.getElementById("edad_regis").value);
             const fotoInput=document.getElementById("foto_regis").value.trim();
-            const id = Array.isArray(usuarioGuardado) ? usuarioGuardado[0]?.id : usuarioGuardado?.id;  // si usuario es un array entra como array si no entra directo
-            const puntos_totales = Array.isArray(usuarioGuardado) ? usuarioGuardado[0]?.puntos_totales : usuarioGuardado?.puntos_totales;
+            const id = usuarioGuardado.id;  
+            const puntos_totales = usuarioGuardado.puntos_totales;
 
             
             const divError_usuario=document.getElementById("mensaje_error_usuario");
@@ -99,9 +94,7 @@
             //Si el usuario ya tiene foto
             let foto= fotoInput;
             if(!foto){
-                if(Array.isArray(usuarioGuardado)){
-                foto=usuarioGuardado[0].url_perfil || "";
-                }else if(usuarioGuardado){
+                if(usuarioGuardado){
                     foto=usuarioGuardado.url_perfil || "";
                 }
             }

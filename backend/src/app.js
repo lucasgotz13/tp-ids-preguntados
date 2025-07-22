@@ -51,7 +51,7 @@ app.get("/api/usuarios/:usuario",async (req,res) => {
         });
     }
 
-    return res.status(200).json(response);
+    return res.status(200).json(response[0]);
 })
 
 // Obtener una pregunta (usando el id)
