@@ -11,7 +11,7 @@
         <title>Trivia</title>
     </head>
     <body>
-        <div class="container" id="juego">
+        <div class="container" id="nav_juego">
             <div class="container">
                 <header>
                     <div class="puntos_partida">
@@ -21,16 +21,22 @@
                 </header>
             </div>
 
-            <div class="field">
-                <p class="t_pregunta" id="pregunta">Pregunta aca</p>
+            <div id="loading" class="field loading-component">
                 <div class="control">
-                    <button class="button is-rounded" id="opcion_a" value="a">A</button>
+                    <p class="t_pregunta">Cargando...</p>
+                </div>
+            </div>
+
+            <div class="field" id="div_juego">
+                <p class="t_pregunta" id="pregunta"></p>
+                <div class="control">
+                    <button class="button is-rounded" id="opcion_a" value="a"></button>
                 </div>
                 <div class="control">
-                    <button class="button is-rounded" id="opcion_b" value="b">B</button>
+                    <button class="button is-rounded" id="opcion_b" value="b"></button>
                 </div>
                 <div class="control">
-                    <button class="button is-rounded" id="opcion_c" value="c">C</button>
+                    <button class="button is-rounded" id="opcion_c" value="c"></button>
                 </div>
                 <div class="control">
                     <button class="button is-rounded" id="siguiente_pregunta">Siguiente pregunta</button>
@@ -46,7 +52,10 @@
             const respuestaC = document.querySelector("#opcion_c");
             const elPuntos = document.querySelector("#puntos")
             const botonSiguientePregunta = document.querySelector("#siguiente_pregunta")
+            const divJuego = document.querySelector("#div_juego")
+            const divLoading = document.querySelector("#loading")
             const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+            divJuego.style = "display: none;"
             setTimeout(() => {
                 if (usuarioGuardado == null) {
                     alert("No has iniciado sesion");
@@ -62,6 +71,8 @@
                         "http://localhost:3030/api/preguntas"
                     );
                     const preguntas = await response.json();
+                    divJuego.style = "display: block;"
+                    divLoading.style = "display: none;"
                     if (categoria == null) {
                         const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5)
                         return preguntasRandomizadas;
