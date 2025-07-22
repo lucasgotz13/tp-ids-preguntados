@@ -37,6 +37,7 @@
 					<li class="p2" id="top2">Usuario2 - puntos</li>
 					<li class="p3" id="top3">Usuario3 - puntos</li>	
 				</ol>
+				<h1 id="loading">cargando</h1>
 			</div>
 		</div>
 	</div>
@@ -50,6 +51,9 @@
 			const top1 = document.querySelector("#top1")
 			const top2 = document.querySelector("#top2")
 			const top3 = document.querySelector("#top3")
+			const cargando = document.querySelector("#loading")
+			const puestos = document.querySelector(".puestos")
+			puestos.style = "display: none;"
 
 			const params = new URLSearchParams(window.location.search)
 			const puntos = params.get("puntos")
@@ -61,7 +65,6 @@
 						window.location.href = "../login-regis/index.html";
 					}
 				}, 200);
-			console.log(usuarioGuardado)
 			elemPuntos.innerHTML = `Puntos: <strong>${puntos}</strong>`
 
 			async function getUsuario(id) {
@@ -79,9 +82,11 @@
 				const usuario = await getUsuario(usuarioGuardado.id)
 				if (puntos > usuario.mejor_puntaje) {
 					elemRecordPuntos.innerHTML = `Record: <strong>${puntos}</strong> <span style="color: red;">Nuevo record!</span>`
-					actualizarUsuario(usuario)
+					await actualizarUsuario(usuario)
+					await actualizarRanking()
 				} else {
 					elemRecordPuntos.innerHTML = `Record: <strong>${usuario.mejor_puntaje}</strong>`
+					await actualizarRanking()
 				}
 			}
 
@@ -107,6 +112,31 @@
 				} catch (error) {
 					console.error("Error: ", error)	
 				}
+			}
+
+			async function getRanking() {
+				try {
+					const response = await fetch("http://localhost:3030/api/usuarios")
+					const data = await response.json();
+
+					const dataSorted = data.sort((a, b) => b.mejor_puntaje - a.mejor_puntaje)
+
+					const ranking = dataSorted.slice(0,3)
+
+					return ranking
+				} catch (error) {
+					console.error("Hubo un error:", error)
+				}
+			}
+			
+			async function actualizarRanking() {
+				const ranking = await getRanking();
+				console.log(ranking)
+				puestos.style = "display: block;"
+				cargando.style = "display: none"
+				top1.innerHTML = `${ranking[0].nombre} - ${ranking[0].mejor_puntaje}`
+				top2.innerHTML = `${ranking[1].nombre} - ${ranking[1].mejor_puntaje}`
+				top3.innerHTML = `${ranking[2].nombre} - ${ranking[2].mejor_puntaje}`
 			}
 			chequearRecord(puntos)
 	</script>

@@ -332,7 +332,7 @@ app.post("/api/usuarios", async (req, res) => {
             mensaje: "Hubo un error al crear el usuario",
         });
     }
-    return res.status(201).json({ status: true, mensaje: "Usuario creado" });
+    return res.status(201).json({ status: true, mensaje: "Usuario creado", usuario: {nombre: nombre, usuario: usuario, edad: edad, url_perfil: url_perfil, mejor_puntaje: mejor_puntaje} });
 });
 
 // Actualizar un usuario

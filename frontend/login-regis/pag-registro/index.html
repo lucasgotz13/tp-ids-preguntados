@@ -86,7 +86,7 @@
 
 
                 const data = await response.json();
-                console.log("Usuario creado:", data);
+                console.log("Usuario creado:", data.usuario);
                 alert("Usuario creado con éxito");
 
                 localStorage.setItem("usuario", JSON.stringify(data));
