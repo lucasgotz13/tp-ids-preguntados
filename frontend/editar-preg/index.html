@@ -141,7 +141,7 @@
   mensaje.style.display = "none";
 
   async function cargarPreguntas() {
-    const res = await fetch(`http://localhost:3030/preguntas/${usuario[0].id}`);
+    const res = await fetch(`http://localhost:3030/preguntas/${usuario.id}`);
     const todas = await res.json();
 
     console.log("Preguntas cargadas:", todas);
