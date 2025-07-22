@@ -18,18 +18,21 @@
     </a>
     <div class="card">
         <div class="card-content">
-            <h1 class="title is-2 has-text-centered">Escribe la pregunta que deseas editar</h1>
+            <h1 class="title is-2 has-text-centered">Elige la pregunta que deseas editar</h1>
             <div class="field">
                 <label class="label">Pregunta:</label>
-                <div class="control">
-                    <input class="input" type="text" id="pregunta_a_modificar" required placeholder="Tu pregunta..." />
+                <div class="table">
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Pregunta</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_preguntas">
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <button class="button is-primary" id="boton_preg">Editar</button>
-            <button class="button is-primary" id="boton_borrar">Borrar</button>
-            
-            <div class="notification is-warning is-light" id="mensaje_buscar">
-                No se encontró la pregunta.
             </div>
         </div>
     </div>
@@ -66,35 +69,47 @@
                 <option> Dificultad </option>
                 <option> Facil </option>
                 <option> Intermedio </option>
-                <option> Dificl </option>
+                <option> Dificil </option>
               </select>
             </span>
           </div>
         </div>
 
-        <div class="field ">
-            <label class="label">Opción 1 (Correcta):</label>
-            <div class="control">
-                <input class="input" type="text" id="respuesta_correcta" required placeholder="A" />
+        <div class="field">
+            <label class="label">Opción Correcta</label>
+            <!-- <div class="control">
+                <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
+            </div> -->
+            <div class="field has-addions" >
+                <div class="control">
+                    <span class="select" id="respuesta_correcta">
+                        <select>
+                            <option> Opciones </option>
+                            <option value="a"> A </option>
+                            <option value="b"> B </option>
+                            <option value="c"> C </option>
+                        </select>
+                    </span>
+                </div>
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 2:</label>
+            <label class="label">Opción A:</label>
             <div class="control">
                 <input class="input" type="text" id="respuesta_a"required placeholder="B" />
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 3:</label>
+            <label class="label">Opción B:</label>
             <div class="control">
                 <input class="input" type="text" id="respuesta_b" required placeholder="C" />
             </div>
         </div>
 
         <div class="field">
-            <label class="label">Opción 4</label>
+            <label class="label">Opción C:</label>
             <div class="control">
                 <input class="input" type="text" id="respuesta_c" required placeholder="D" />
             </div>
@@ -107,198 +122,124 @@
     </div>
 
     <script>
-        // Variables de referencia a los elementos del html
-        const preguntaInput = document.getElementById("pregunta_a_modificar");
-        const mensaje=document.getElementById("mensaje_completar_datos");
-        const msg = document.getElementById("mensaje_buscar");
-        const caja = document.querySelector(".box");
-        const cajaPregunta = document.querySelector(".card");
-        let preguntaId;
-        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-      
-        caja.style.display="none";
-        mensaje.style.display="none";
-        msg.style.display="none";
 
-        document.getElementById("boton_preg").addEventListener("click", async function() {
-            const pregunta = preguntaInput.value.trim();
-            if (!pregunta) {
-                msg.style.display = "block";
-                msg.style.marginTop = "10px";
-                setTimeout(() => {
-                    msg.style.display = "none";
-                }, 3000);
-                return;
-            }
+  const tablaPreguntas = document.getElementById("tabla_preguntas");
+  const caja = document.querySelector(".box");
+  const mensaje = document.getElementById("mensaje_completar_datos");
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const cajaInicio = document.querySelector(".card");
+  let preguntaId = null;
+  const preguntaInput = document.getElementById("pregunta");
+  const categoriaSelect = document.getElementById("selector_categoria").querySelector("select");
+  const dificultadSelect = document.getElementById("selector_dificultad").querySelector("select");
+  const respuestaCorrectaSelect = document.getElementById("respuesta_correcta").querySelector("select");
+  const respuestaAInput = document.getElementById("respuesta_a");
+  const respuestaBInput = document.getElementById("respuesta_b");
+  const respuestaCInput = document.getElementById("respuesta_c");
 
-            try {
+  caja.style.display = "none";
+  mensaje.style.display = "none";
 
-                const res = await fetch(`http://localhost:3030/preguntas/${encodeURIComponent(usuarioGuardado[0].id)}`);
+  async function cargarPreguntas() {
+    const res = await fetch(`http://localhost:3030/preguntas/${usuario[0].id}`);
+    const todas = await res.json();
 
-               
-                  
-                if (!res.ok) {
-                    throw new Error("Error al obtener las preguntas");
-                }
-                let preguntas = await res.json();
+    console.log("Preguntas cargadas:", todas);
 
-                console.log(preguntas);
+    todas.forEach(p => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.pregunta}</td>
+        <td>
+          <button class="button is-small is-primary boton_editar" data-id="${p.id}">Editar</button>
+          <button class="button is-small is-danger boton_eliminar" data-id="${p.id}">Eliminar</button>
+        </td>`;
+      tablaPreguntas.appendChild(tr);
+    });
+  };
 
-                
+    cargarPreguntas();
 
-                preguntaId = preguntaEncontrada.id;
-                document.getElementById("pregunta").value = preguntaEncontrada.pregunta;
-                document.querySelector("#selector_categoria select").value = preguntaEncontrada.categoria;
-                document.querySelector("#selector_dificultad select").value = preguntaEncontrada.dificultad;
-                document.getElementById("respuesta_correcta").value = preguntaEncontrada.respuesta_correcta;
-                document.getElementById("respuesta_a").value = preguntaEncontrada.respuesta_a;
-                document.getElementById("respuesta_b").value = preguntaEncontrada.respuesta_b;
-                document.getElementById("respuesta_c").value = preguntaEncontrada.respuesta_c;
+    tablaPreguntas.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("boton_editar")) {
+            const id = e.target.getAttribute("data-id");
+            preguntaId = id;
 
-                cajaPregunta.style.display = "none";
-                caja.style.display = "block";
+            console.log("ID de la pregunta a editar:", preguntaId);
 
-            } catch (error) {
-                msg.style.display = "block";
-                console.error("Error al buscar la pregunta:", error);
-            }
-        });
+            const res = await fetch(`http://localhost:3030/api/preguntas/${id}`);
+            const pregunta = await res.json();
 
-        document.getElementById("boton_borrar").addEventListener("click", async function(){
-            const pregunta = preguntaInput.value.trim();
-            if (!pregunta) {
-                msg.style.display = "block";
-                msg.style.marginTop = "10px";
-                setTimeout(() => {
-                    msg.style.display = "none";
-                }, 3000);
-                return;
-            }
+            caja.style.display = "block";
+            mensaje.style.display = "none";
+            cajaInicio.style.display = "none";
+        } 
+    });
 
-            try {
-                const res = await fetch(`http://localhost:3030/api/preguntas/`);
-                if (!res.ok) {
-                    throw new Error("Error al obtener las preguntas");
-                }
-                let preguntas = await res.json();
-                const userId = usuarioGuardado.id;
-
-                preguntas = preguntas.filter(p => p.id_usuario === userId);
-                if (preguntas.length === 0) {
-                    msg.style.display = "block";
-                    msg.style.marginTop = "10px";
-                    setTimeout(() => {
-                        msg.style.display = "none";
-                    }, 3000);
-                    return;
-                }
-                const preguntaEncontrada = preguntas.find(p => p.pregunta === pregunta);
-                if (!preguntaEncontrada) {
-                    msg.style.display = "block";
-                    msg.style.marginTop = "10px";
-                    setTimeout(() => {
-                        msg.style.display = "none";
-                    }, 3000);
-                    return;
-                }
-
-                preguntaId = preguntaEncontrada.id;
-
-                const confirmar = confirm("¿Estás seguro que deseas eliminar la pregunta?"); 
-                if (!confirmar) {
-                    return;
-                }
-                const response = await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`, {
-                    method: "DELETE"
-                });
-
-                if (response.ok) {
-                    alert("Pregunta eliminada correctamente");
-                    cajaPregunta.style.display = "block";
-                    caja.style.display = "none";
-                    preguntaInput.value = "";
-                    preguntaId = null;
-                } else {
-                    alert("No se pudo eliminar la pregunta");
-                }
-
-            } catch (error) {
-                alert("Error al eliminar la pregunta");
-                console.error(error);
-            }
-        })
-
-        document.getElementById("boton_envio").addEventListener("click", async function() {
-
-        const pregunta = document.getElementById("pregunta").value.trim();
-        const categoria = document.querySelector("#selector_categoria select").value.trim();
-        const dificultad= document.querySelector("#selector_dificultad select").value.trim();
-        const respuesta_correcta = document.getElementById("respuesta_correcta").value.trim();
-        const respuesta_a = document.getElementById("respuesta_a").value.trim();
-        const respuesta_b = document.getElementById("respuesta_b").value.trim();
-        const respuesta_c = document.getElementById("respuesta_c").value.trim();
-
-        if(!pregunta || categoria === "Categoria" || dificultad === "Dificultad" || !respuesta_correcta || !respuesta_a || !respuesta_b || !respuesta_c ){
-            mensaje.style.display="block";
-            mensaje.style.marginTop = "10px";
-                setTimeout(() => {
-                    mensaje.style.display = "none";
-                }, 3000);
+    document.getElementById("boton_envio").addEventListener("click", async function() {
+        if (!preguntaInput.value || categoriaSelect.value === "Categoria" || dificultadSelect.value === "Dificultad" || respuestaCorrectaSelect.value === "Opciones" || !respuestaCorrectaSelect.value || !respuestaAInput.value || !respuestaBInput.value || !respuestaCInput.value) {
+            mensaje.style.display = "block";
+            setTimeout(() => {
+                mensaje.style.display = "none";
+                console.log("Por favor, complete todos los campos.");
+            }, 3000);
             return;
         }
 
         let puntos = 0;
-        
-        if(dificultad === "Facil"){
-            puntos =10;
+        if (dificultadSelect.value === "Facil") {
+            puntos = 10;
+        } else if (dificultadSelect.value === "Intermedio") {
+            puntos = 20;
+        } else {
+            puntos = 30;
         }
-        else {
-            if(dificultad === "Intermedio" ){
-                puntos = 20;
-            }
-            else{
-                puntos = 30;
-            }
-        }
-            try{
-                const response= await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`,{
 
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        pregunta: pregunta,
-                        categoria: categoria,
-                        dificultad: dificultad,
-                        puntos: puntos,
-                        respuesta_a: respuesta_a,
-                        respuesta_b: respuesta_b,
-                        respuesta_c: respuesta_c,
-                        respuesta_correcta: respuesta_correcta
-                    })
-                })
-                if (response.ok){
-                    alert("¡Pregunta editada con éxito!");
-                    document.getElementById("pregunta").value = "";
-                    document.querySelector("#selector_categoria select").value = "Categoria";
-                    document.querySelector("#selector_dificultad select").value = "Dificultad";
-                    document.getElementById("respuesta_correcta").value = "";
-                    document.getElementById("respuesta_a").value = "";
-                    document.getElementById("respuesta_b").value = "";
-                    document.getElementById("respuesta_c").value = "";
-                    caja.style.display = "none";
-                    cajaPregunta.style.display = "block";
-                    preguntaInput.value = "";
-                    preguntaId = null;
-                    mensaje.style.display = "none";
-                }else{
-                    alert("No se pudo editar la pregunta");
-                }
-               
-            }catch(error){
-                alert("Error al editar la pregunta");
-                console.error(error);
-            }
+        try {
+        const response = await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                pregunta: preguntaInput.value,
+                categoria: categoriaSelect.value,
+                dificultad: dificultadSelect.value,
+                puntos: puntos,
+                respuesta_correcta: respuestaCorrectaSelect.value,
+                respuesta_a: respuestaAInput.value,
+                respuesta_b: respuestaBInput.value,
+                respuesta_c: respuestaCInput.value
+            })
         });
-    </script>
+        if (!response.ok) {
+            throw new Error("Error al actualizar la pregunta");
+        }
+        alert("Pregunta actualizada con éxito");
+        window.location.reload();
+    } catch (error) {
+        console.error("Error al actualizar la pregunta:", error);
+    }
+    });
+
+    tablaPreguntas.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("boton_eliminar")) {
+            const id = e.target.getAttribute("data-id");
+            const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta pregunta?");
+            if (confirmacion) {
+                try {
+                    const response = await fetch(`http://localhost:3030/api/preguntas/${id}`, {
+                        method: "DELETE"
+                    });
+                    if (!response.ok) {
+                        throw new Error("Error al eliminar la pregunta");
+                    }
+                    alert("Pregunta eliminada con éxito");
+                    window.location.reload();
+                } catch (error) {
+                    console.error("Error al eliminar la pregunta:", error);
+                }
+            }
+        }
+    });
+</script>

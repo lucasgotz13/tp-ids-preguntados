@@ -60,11 +60,15 @@ html, body {
     background-color: rgba(207, 235, 235, 0.952);
 }
 
-#boton_preg {
-    width: 150px;
-    margin-right: 398px;
+.button.is-small.is-primary {
+    width: 100px;
 }
 
-#boton_borrar {
-    width: 150px;
+.button.is-small.is-danger {
+    width: 100px;
+}
+
+tr, th {
+    text-align: center;
+    background-color: rgba(49, 53, 53, 0.952);
 }
