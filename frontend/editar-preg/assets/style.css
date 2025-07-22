@@ -59,3 +59,12 @@ html, body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: rgba(207, 235, 235, 0.952);
 }
+
+#boton_preg {
+    width: 150px;
+    margin-right: 398px;
+}
+
+#boton_borrar {
+    width: 150px;
+}

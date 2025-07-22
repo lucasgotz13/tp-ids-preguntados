@@ -213,6 +213,22 @@ async function getOneUserByUsuario(usuario) {
     return response.rows;
 }
 
+async function updatePreguntaYRespuestas(id, pregunta, dificultad, categoria, puntos, respuesta_a, respuesta_b, respuesta_c, correcta) {
+    await dbClient.query(
+      `UPDATE preguntas
+       SET pregunta=$2, dificultad=$3, categoria=$4, puntos=$5
+       WHERE id=$1`,
+      [id, pregunta, dificultad, categoria, puntos]
+    );
+  
+    await dbClient.query(
+      `UPDATE respuestas
+       SET respuesta_a=$2, respuesta_b=$3, respuesta_c=$4, respuesta_correcta=$5
+       WHERE id_pregunta=$1`,
+      [id, respuesta_a, respuesta_b, respuesta_c, correcta]
+    );
+}
+
 module.exports = {
     getPreguntaRespuestaById,
     createPregunta,
@@ -231,4 +247,5 @@ module.exports = {
     getAllPreguntasRespuestas,
     getIdFromPregunta,
     getOneUserByUsuario,
+    updatePreguntaYRespuestas
 };

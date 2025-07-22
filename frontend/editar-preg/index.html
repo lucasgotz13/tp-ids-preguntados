@@ -25,7 +25,9 @@
                     <input class="input" type="text" id="pregunta_a_modificar" required placeholder="Tu pregunta..." />
                 </div>
             </div>
-            <button class="button is-primary" id="boton_preg">Listo</button>
+            <button class="button is-primary" id="boton_preg">Editar</button>
+            <button class="button is-primary" id="boton_borrar">Borrar</button>
+            
             <div class="notification is-warning is-light" id="mensaje_buscar">
                 No se encontró la pregunta.
             </div>
@@ -106,17 +108,19 @@
 
     <script>
 
+        // Variables de referencia a los elementos del html
+        const preguntaInput = document.getElementById("pregunta_a_modificar");
         const mensaje=document.getElementById("mensaje_completar_datos");
         const msg = document.getElementById("mensaje_buscar");
         const caja = document.querySelector(".box");
         const cajaPregunta = document.querySelector(".card");
         let preguntaId;
 
+        
         caja.style.display="none";
         mensaje.style.display="none";
         msg.style.display="none";
 
-        const preguntaInput = document.getElementById("pregunta_a_modificar");
         document.getElementById("boton_preg").addEventListener("click", async function() {
             const pregunta = preguntaInput.value.trim();
             if (!pregunta) {
@@ -162,6 +166,60 @@
                 console.error("Error al buscar la pregunta:", error);
             }
         });
+
+        document.getElementById("boton_borrar").addEventListener("click", async function(){
+            const pregunta = preguntaInput.value.trim();
+            if (!pregunta) {
+                msg.style.display = "block";
+                msg.style.marginTop = "10px";
+                setTimeout(() => {
+                    msg.style.display = "none";
+                }, 3000);
+                return;
+            }
+
+            try {
+                const res = await fetch(`http://localhost:3030/api/preguntas/`);
+                if (!res.ok) {
+                    throw new Error("Error al obtener las preguntas");
+                }
+                const preguntas = await res.json();
+
+                const preguntaEncontrada = preguntas.find(p => p.pregunta === pregunta);
+                if (!preguntaEncontrada) {
+                    msg.style.display = "block";
+                    msg.style.marginTop = "10px";
+                    setTimeout(() => {
+                        msg.style.display = "none";
+                    }, 3000);
+                    return;
+                }
+
+                preguntaId = preguntaEncontrada.id;
+
+                const confirmar = confirm("¿Estás seguro que deseas eliminar la pregunta?"); 
+                if (!confirmar) {
+                    return;
+                }
+                const response = await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    alert("Pregunta eliminada correctamente");
+                    cajaPregunta.style.display = "block";
+                    caja.style.display = "none";
+                    preguntaInput.value = "";
+                    preguntaId = null;
+                } else {
+                    alert("No se pudo eliminar la pregunta");
+                }
+
+            } catch (error) {
+                alert("Error al eliminar la pregunta");
+                console.error(error);
+            }
+        })
 
         document.getElementById("boton_envio").addEventListener("click", async function() {
 
@@ -233,7 +291,7 @@
                 }
                
             }catch(error){
-                alert("error al editar la pregunta");
+                alert("Error al editar la pregunta");
                 console.error(error);
             }
         });
