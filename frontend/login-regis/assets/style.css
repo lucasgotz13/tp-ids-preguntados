@@ -38,10 +38,6 @@ body{
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-#form_regis {
-    margin-top: 100px;
-}
-
 #form_regis h2 {
     text-align: center; 
     padding-top: 0;
