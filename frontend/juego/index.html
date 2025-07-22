@@ -53,8 +53,9 @@
             const botonSiguientePregunta = document.querySelector("#siguiente_pregunta")
             const divJuego = document.querySelector("#div_juego")
             const divLoading = document.querySelector("#loading")
-            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
             divJuego.style = "display: none;"
+
+            const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
             setTimeout(() => {
                 if (usuarioGuardado == null) {
                     alert("No has iniciado sesion");

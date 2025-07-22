@@ -4,7 +4,7 @@ CREATE TABLE usuarios (
     usuario VARCHAR(30) NOT NULL,
     edad INT NOT NULL CHECK (edad >= 0 AND edad <= 100),
     url_perfil VARCHAR(1000), 
-    puntos_totales INT );
+    mejor_puntaje INT );
 
 
 CREATE TABLE preguntas (
