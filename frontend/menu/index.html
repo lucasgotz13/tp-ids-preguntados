@@ -151,19 +151,13 @@
         }
     }, 200);
 
-        let urlFoto = "";
-        if (Array.isArray(usuarioGuardado)) {
-            urlFoto = usuarioGuardado[0]?.url_perfil || usuarioGuardado[0]?.foto || "";
-        } else if (usuarioGuardado) {
-            urlFoto = usuarioGuardado.url_perfil || usuarioGuardado.foto || "";
-        }
+    // Si el usuario tiene foto de perfil, la usa.
+       
+        const urlFoto = usuarioGuardado.url_perfil 
 
         if(urlFoto && urlFoto !== ""){
             document.getElementById("imagen_logo").src = urlFoto;
         } 
-
-
-
 
     document.getElementById("eliminar_usuario").addEventListener("click", async function(){
 
@@ -172,14 +166,14 @@
 
         // 1. Obtener usuario del localStorage
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-        if(!usuarioGuardado[0] || !usuarioGuardado[0].usuario){
+        if(!usuarioGuardado || !usuarioGuardado.usuario){
             alert("No se encontró el usuario para eliminar");
             return;
         }
 
         //2.enviar peticion de delete
         try {
-            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado[0].id)}`,{
+            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado.id)}`,{
                 method:"DELETE"
             });
 
@@ -209,7 +203,7 @@
 
 
     function obtenerDatos() {
-        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado[0].usuario}&nombre=${usuarioGuardado[0].nombre}&edad=${usuarioGuardado[0].edad}&url_perfil=${usuarioGuardado[0].url_perfil}`     
+        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado.usuario}&nombre=${usuarioGuardado.nombre}&edad=${usuarioGuardado.edad}&url_perfil=${usuarioGuardado.url_perfil}`     
     }
 
     </script>
