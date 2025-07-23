@@ -6,7 +6,6 @@
 }
 
 html, body {
-    height: 100%;  
     box-sizing: border-box; 
     background-image: url(city_trivia.png);
     background-size: cover;
@@ -17,12 +16,21 @@ html, body {
 
 
 .box{
-    margin: 50px auto; 
+    margin: 50px auto;
     width: 800px;
-    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: rgba(207, 235, 235, 0.952);
+}
+
+#fondo{
+    width: 100dvh;
+    height: 100dvh;
+}
+
+#boton_menu{
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .control{

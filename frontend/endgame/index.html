@@ -43,9 +43,25 @@
 	</div>
 
 	<div class="container has-text-centered" id="boton-container">
-		<a class="button is-link" href="../menu/index.html">Volver al Menú</a>
+		<a class="button is-link" id="volverMenu">Volver al Menú</a>
 	</div>
-	<script>	
+	
+	<script>
+		const audio = new Audio();
+		audio.src = "../endgame/assets/game.mp3";
+		const volverMenuBtn = document.getElementById('volverMenu');
+		volverMenuBtn.addEventListener('click', function(event) {
+			event.preventDefault();
+			audio.play().then(() => {
+				setTimeout(() => {
+					window.location.href = "../menu/index.html";
+				}, 700); 
+			}).catch(error => {
+				console.error("Error al reproducir el audio:", error);
+				window.location.href = "../menu/index.html";
+			});
+		});
+
 			const elemPuntos = document.querySelector("#h1_puntaje")
 			const elemRecordPuntos = document.querySelector("#h1_record")
 			const top1 = document.querySelector("#top1")

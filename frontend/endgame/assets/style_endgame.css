@@ -16,8 +16,8 @@ html, body {
 }
 
 #data{
-    width: 60%;
-    height: 80%;
+    width: 700px;
+    margin: auto;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -27,7 +27,7 @@ html, body {
     margin-top: 20px;
 }
 
-    #titulo {
+#titulo {
     text-align: center;
     display: block;
     width: 400px;

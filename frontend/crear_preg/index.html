@@ -10,98 +10,100 @@
 </head>
 
 <body>
-    <a class="button is-dark is-small" href="../menu/index.html">
-        <span class="icon">
-            <i class="fas fa-home"></i>
-        </span>
-        <span>MENU</span>
-    </a>
+    <div class="container" id="fondo">
+        <a class="button is-dark is-small" id="boton_menu" href="../menu/index.html">
+            <span class="icon">
+                <i class="fas fa-home"></i>
+            </span>
+            <span>MENU</span>
+        </a>
 
-    <div class="box" >
-        <div class="Gracias">
-            <h1 class="title is-2 has-text-centered">¡Gracias por contribuir con el juego!</h1>
-            <p class="subtitle is-">Completa los siguientes campos para que tu pregunta esté disponible para todos los jugadores</p>
-        </div>
-        <div class="field" >
-            <label class="label">Pregunta:</label>
-            <div class="control">
-                <input class="input" type="text" id="pregunta" required placeholder="Tu pregunta..." />
+        <div class="box" >
+            <div class="Gracias">
+                <h1 class="title is-2 has-text-centered">¡Gracias por contribuir con el juego!</h1>
+                <p class="subtitle is-">Completa los siguientes campos para que tu pregunta esté disponible para todos los jugadores</p>
             </div>
-        </div>
-
-        <div class="field has-addions" >
-            <label class="label">Categoria</label>
-          <div class="control">
-            <span class="select" id="selector_categoria">
-              <select>
-                <option> Categoria </option>
-                <option> Deportes </option>
-                <option> Mundi </option>
-                <option> Cine </option>
-                <option> Mega-Mix </option>
-              </select>
-            </span>
-          </div>
-        </div>
-
-        <div class="field has-addions" >
-            <label class="label">Dificultad</label>
-          <div class="control">
-            <span class="select" id="selector_dificultad">
-              <select>
-                <option> Dificultad </option>
-                <option> Facil </option>
-                <option> Intermedio </option>
-                <option> Dificil </option>
-              </select>
-            </span>
-          </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Opción Correcta</label>
-            <!-- <div class="control">
-                <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
-            </div> -->
-            <div class="field has-addions" >
+            <div class="field" >
+                <label class="label">Pregunta:</label>
                 <div class="control">
-                    <span class="select" id="respuesta_correcta">
-                        <select>
-                            <option> Opciones </option>
-                            <option value="a"> A </option>
-                            <option value="b"> B </option>
-                            <option value="c"> C </option>
-                        </select>
-                    </span>
+                    <input class="input" type="text" id="pregunta" required placeholder="Tu pregunta..." />
                 </div>
             </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Opcion A:</label>
+            <div class="field has-addions" >
+                <label class="label">Categoria</label>
             <div class="control">
-                <input class="input" type="text" id="respuesta_a"required placeholder="Opcion A" />
+                <span class="select" id="selector_categoria">
+                <select>
+                    <option> Categoria </option>
+                    <option> Deportes </option>
+                    <option> Mundi </option>
+                    <option> Cine </option>
+                    <option> Mega-Mix </option>
+                </select>
+                </span>
             </div>
-        </div>
+            </div>
 
-        <div class="field">
-            <label class="label">Opcion B:</label>
+            <div class="field has-addions" >
+                <label class="label">Dificultad</label>
             <div class="control">
-                <input class="input" type="text" id="respuesta_b" required placeholder="Opcion B" />
+                <span class="select" id="selector_dificultad">
+                <select>
+                    <option> Dificultad </option>
+                    <option> Facil </option>
+                    <option> Intermedio </option>
+                    <option> Dificil </option>
+                </select>
+                </span>
             </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Opcion C:</label>
-            <div class="control">
-                <input class="input" type="text" id="respuesta_c" required placeholder="Opcion C" />
             </div>
-        </div>
 
-        <div class="notification is-warning is-light" id="mensaje_completar_datos">
-            Por favor, ingrese todos los datos.
+            <div class="field">
+                <label class="label">Opción Correcta</label>
+                <!-- <div class="control">
+                    <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
+                </div> -->
+                <div class="field has-addions" >
+                    <div class="control">
+                        <span class="select" id="respuesta_correcta">
+                            <select>
+                                <option> Opciones </option>
+                                <option value="a"> A </option>
+                                <option value="b"> B </option>
+                                <option value="c"> C </option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opcion A:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_a"required placeholder="Opcion A" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opcion B:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_b" required placeholder="Opcion B" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opcion C:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_c" required placeholder="Opcion C" />
+                </div>
+            </div>
+
+            <div class="notification is-warning is-light" id="mensaje_completar_datos">
+                Por favor, ingrese todos los datos.
+            </div>
+            <button class="button is-primary" id="boton_envio">Guardar pregunta</button>
         </div>
-        <button class="button is-primary" id="boton_envio">Guardar pregunta</button>
     </div>
 
     <script>
