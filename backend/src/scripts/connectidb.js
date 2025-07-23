@@ -6,6 +6,7 @@ const dbClient = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
+    pool_mode: process.env.DB_POOL_MODE
 });
 
 async function getAllPreguntasRespuestas() {
