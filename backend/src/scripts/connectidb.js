@@ -1,11 +1,11 @@
 const { Pool } = require("pg");
 
 const dbClient = new Pool({
-    user: "postgres",
-    password: "postgres",
-    host: "localhost",
-    port: 5432,
-    database: "preguntados",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
 });
 
 async function getAllPreguntasRespuestas() {

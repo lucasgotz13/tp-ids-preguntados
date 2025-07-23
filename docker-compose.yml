@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: quiz_city_db
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/src/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+
+  backend:
+    build: ./backend
+    container_name: quiz_city_backend
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+    ports:
+      - "3030:3030"
+    depends_on:
+      - postgres
+  
+  frontend:
+    build: ./frontend
+    container_name: quiz_city_frontend
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:

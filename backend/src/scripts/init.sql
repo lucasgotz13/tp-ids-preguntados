@@ -21,7 +21,7 @@ create table respuestas (
     respuesta_a VARCHAR(255), 
     respuesta_b VARCHAR(255),
     respuesta_c VARCHAR(255), 
-    respuesta_correcta varchar(255) 
+    respuesta_correcta varchar(255),
     id_pregunta INT REFERENCES preguntas(id) 
      );
 
