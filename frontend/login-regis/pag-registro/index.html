@@ -118,8 +118,11 @@
                     }
 
                     const usuario_guardado= await respuesta.json();
+                    const secret = "echo_boca";
+                    const token = btoa(usuario_guardado.usuario + ":" + secret)
 
                     localStorage.setItem("usuario", JSON.stringify(usuario_guardado));
+                    localStorage.setItem("token", token)
 
                     window.location.href="../../menu/index.html";
 

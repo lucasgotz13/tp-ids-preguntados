@@ -26,4 +26,4 @@ run-backend-dev:
 	cd ./backend && npm run dev
 
 run-frontend-dev:
-	cd ./frontend && http-server --cors
+	cd ./frontend && http-server --cors -c-1
