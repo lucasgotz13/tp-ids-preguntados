@@ -11,6 +11,8 @@
         <title>Trivia</title>
     </head>
     <body>
+        <audio id="backgroundMusic" src="/frontend/juego/musica_fondo.mp3" preload="auto" loop></audio>
+        
         <div class="container" id="nav_juego">
             <div class="container">
                 <header>
@@ -43,7 +45,25 @@
             </div>
         </div>
 
-        <script> 
+        <script>
+            
+            const bgMusic = document.getElementById('backgroundMusic');
+            let musicStarted = false; 
+
+            function tryPlayMusic() {
+                if (!musicStarted) {
+                    bgMusic.volume = 0.3; 
+                    bgMusic.play().then(() => {
+                        console.log("Música de fondo repro.");
+                        musicStarted = true;
+                        document.removeEventListener('click', tryPlayMusic);
+                        document.removeEventListener('keydown', tryPlayMusic);
+                    }).catch(error => {
+                        console.warn("No se pudo iniciar la música", error);
+                    });
+                }
+            }
+           
             let puntos = 0;
             const pregunta = document.querySelector("#pregunta");
             const respuestaA = document.querySelector("#opcion_a");
@@ -61,23 +81,16 @@
             const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret) 
 
             if (!usuarioGuardado || !token) {
-                // Redirige al login si falta algo 
                 alert("No has iniciado sesion")
                  window.location.href = "../login-regis/index.html";
             } else {
                 const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
                 if (token !== expectedToken) {
-                    // Token inválido, redirige al login
                     alert("No has iniciado sesion")
                     window.location.href = "../login-regis/index.html";
                 }
             }
-            // setTimeout(() => {
-            //     if (usuarioGuardado == null) {
-            //         alert("No has iniciado sesion");
-            //         window.location.href = "../login-regis/index.html";
-            //     }
-            // }, 200);
+            
             const params = new URLSearchParams(window.location.search);
             const categoria = params.get("categoria");
 
@@ -89,6 +102,9 @@
                     const preguntas = await response.json();
                     divJuego.style = "display: block;"
                     divLoading.style = "display: none;"
+                    // iniciar la música 
+                    tryPlayMusic();
+
                     if (categoria == null) {
                         const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5)
                         return preguntasRandomizadas;
@@ -98,7 +114,7 @@
                         .sort(() => Math.random() - 0.5);
                     return preguntasFiltradas;
                 } catch (e) {
-                    console.error("Error al encontrar las preguntas", error);
+                    console.error("Error al encontrar las preguntas", e); // Cambiado 'error' a 'e' para coincidir con el catch
                     return false;
                 }
             }
@@ -114,7 +130,7 @@
                     elPuntos.innerHTML = `Puntos: ${puntos}`
                 } else {
                     e.currentTarget.classList.add("incorrecta")
-                    document.querySelector("#opcion_"+preguntasCategoria[indPreguntaActual].respuesta_correcta).classList.add("correcta") 
+                    document.querySelector("#opcion_"+preguntasCategoria[indPreguntaActual].respuesta_correcta).classList.add("correcta")
                 }
                 respuestaA.classList.add("deshabilitar") 
                 respuestaB.classList.add("deshabilitar") 
@@ -123,12 +139,16 @@
 
             async function siguientePregunta(preguntasCategoria, indPreguntaActual) {
                 if (indPreguntaActual === preguntasCategoria.length) {
+                    // El juego ha terminado, pausar la música
+                    bgMusic.pause();
+                    bgMusic.currentTime = 0; 
+
                     window.location.href = `../endgame/index.html?puntos=${puntos}`
                     return
                 }
-                respuestaA.classList.remove("deshabilitar") 
-                respuestaB.classList.remove("deshabilitar") 
-                respuestaC.classList.remove("deshabilitar") 
+                respuestaA.classList.remove("deshabilitar")
+                respuestaB.classList.remove("deshabilitar")
+                respuestaC.classList.remove("deshabilitar")
                 pregunta.innerHTML = `${preguntasCategoria[indPreguntaActual].pregunta}`;
                 respuestaA.innerHTML = `${preguntasCategoria[indPreguntaActual].respuesta_a}`
                 respuestaA.classList.remove("correcta")
