@@ -51,12 +51,21 @@
         document.getElementById("edad_regis").value = edad
         document.getElementById("foto_regis").value = urlPerfil
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-        setTimeout(function() {
-            if(usuarioGuardado == null){
-                alert("No has iniciado sesion");
-                window.location.href = "../login-regis/index.html"
-            }
-        }, 200);
+        const secret = "echo_boca";
+		const token = localStorage.getItem("token");
+		if (!usuarioGuardado || !token) {
+			// Redirige al login si falta algo 
+			alert("No has iniciado sesion")
+			window.location.href = "../login-regis/index.html";
+		} else {
+			const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
+			console.log(expectedToken)
+			if (token !== expectedToken) {
+				// Token inválido, redirige al login
+				alert("No has iniciado sesion")
+				window.location.href = "../login-regis/index.html";
+			}
+        }	 
 
         // Si usuarioGuardado es un array, usa [0], si es un objeto, accede directo
         const urlFoto = usuarioGuardado.url_perfil;
