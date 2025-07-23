@@ -121,7 +121,7 @@ app.get("/api/preguntas/:id", async (req, res) => {
   --data '{"pregunta":"¿Quién fue el último campeon del mundo de fútbol?","dificultad":"facil", 
   "categoria" : "deportes", "puntos": "10", "respuesta_a": "Brasil", "respuesta_b": "Argentina", "respuesta_c": "Francia", "respuesta_correcta": "b"
   ' \ 
-  http://localhost:3030/api/preguntas/  */
+  https://quiz-city-back-despliegue.onrender.com/api/preguntas/  */
 
 // Crear una pregunta y la respuesta
 app.post("/api/preguntas/", async (req, res) => {
@@ -236,7 +236,7 @@ app.put("/api/respuestas/:id", async (req, res) => {
   --request POST \
   --data '{"id_pregunta":"1","respuesta_a":"Manuel Bilbao", "respuesta_b":"Nico Riedel",
   "respuesta_c" : "La peke", "respuesta_correcta": "Manuel Camejo"}' \
-  http://localhost:3030/api/respuestas/  */
+  https://quiz-city-back-despliegue.onrender.com/api/respuestas/  */
 
 // Modificar la pregunta
 /*app.put("/api/preguntas/:id", async (req, res) => {

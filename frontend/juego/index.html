@@ -97,7 +97,7 @@
             async function getPreguntasByCategoria(categoria) {
                 try {
                     const response = await fetch(
-                        "http://localhost:3030/api/preguntas"
+                        "https://quiz-city-back-despliegue.onrender.com/api/preguntas"
                     );
                     const preguntas = await response.json();
                     divJuego.style = "display: block;"
