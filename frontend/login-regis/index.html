@@ -37,7 +37,8 @@
         
 
         <script>
-            
+
+        
         document.getElementById("form").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -63,8 +64,11 @@
                     }
 
                     const usuario= await response.json();
+                    const secret = "echo_boca";
+                    const token = btoa(usuario.usuario + ":" + secret)
 
                     localStorage.setItem("usuario", JSON.stringify(usuario));
+                    localStorage.setItem("token", token)
 
                     window.location.href="../menu/index.html";
             }catch(error){
