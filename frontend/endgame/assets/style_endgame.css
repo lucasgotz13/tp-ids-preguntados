@@ -1,0 +1,118 @@
+
+:root{
+    --primary-color: #f1f5f7;
+    --secondary-color: #2ecc71;
+    --tertiary-color: #153046;
+    --text-color: #000000;
+}
+
+html, body { 
+    height: 100%;
+    background: url(Night\ city.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#data{
+    width: 700px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgb(161, 23, 225), #5a0ae5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    margin-top: 20px;
+}
+
+#titulo {
+    text-align: center;
+    display: block;
+    width: 400px;
+    height: 90px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-top: 20px;
+    border-radius: 20px;
+    background-color: #6a11cb;
+    padding: 20px;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.title {
+    color: var(--primary-color);
+    font-size: 36px;
+}
+
+.informacion_partida{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+#puntos {
+    width: 300px;
+    height: 250px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: #275981;
+    color: #f1f5f7;
+}
+
+.resultado{
+    padding-bottom: 20px;
+    font-size: large;
+    text-align: center;
+}
+
+#ranking{
+    width: 300px;
+    height: 250px;
+    font-size:large;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+}
+
+#ranking h1{
+    color: #153046;
+    font-size: x-large;
+}
+
+.imagen { 
+    max-width: 80px; 
+}
+
+.puestos{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.button {
+    width: 300px;
+    height: 50px;
+    background: #4a1bf7;
+    border: none;
+    box-shadow: black 0 0 7px 0;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+.button:hover {
+    box-shadow: black 0 0 3px 0;
+}
+
+#boton-container {
+    background: none;
+    box-shadow: none;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+}

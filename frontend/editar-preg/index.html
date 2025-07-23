@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Editar pregunta</title>
+</head>
+
+<body>
+    <div class=""container" id="fondo">
+        <a class="button is-dark is-small" id="boton_menu"href="../menu/index.html">
+            <span class="icon">
+                <i class="fas fa-home"></i>
+            </span>
+            <span>MENU</span>
+        </a>
+        <div class="card">
+            <div class="card-content">
+                <h1 class="title is-2 has-text-centered">Elige la pregunta que deseas editar</h1>
+                <div class="field" id="preguntas">
+                    <label class="label">Pregunta:</label>
+                    <div class="table" id="tablaedit">
+                        <table class="table is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Pregunta</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_preguntas">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box" >
+            <div class="Gracias">
+                <h1 class="title is-2 has-text-centered">Modifica tu pregunta</h1>
+                <p class="subtitle is-">Completa los siguientes campos para que tu pregunta esté disponible para todos los jugadores</p>
+            </div>
+            <div class="field" >
+                <label class="label">Pregunta:</label>
+                <div class="control">
+                    <input class="input" type="text" id="pregunta" required placeholder="Tu pregunta..." />
+                </div>
+            </div>
+
+            <div class="field has-addions" >
+            <div class="control">
+                <span class="select" id="selector_categoria">
+                <select>
+                    <option> Categoria </option>
+                    <option> Deportes </option>
+                    <option> Mundi </option>
+                    <option> Cine </option>
+                    <option> Mega-Mix </option>
+                </select>
+                </span>
+            </div>
+            </div>
+
+            <div class="field has-addions" >
+            <div class="control">
+                <span class="select" id="selector_dificultad">
+                <select>
+                    <option> Dificultad </option>
+                    <option> Facil </option>
+                    <option> Intermedio </option>
+                    <option> Dificil </option>
+                </select>
+                </span>
+            </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opción Correcta</label>
+                <!-- <div class="control">
+                    <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
+                </div> -->
+                <div class="field has-addions" >
+                    <div class="control">
+                        <span class="select" id="respuesta_correcta">
+                            <select>
+                                <option> Opciones </option>
+                                <option value="a"> A </option>
+                                <option value="b"> B </option>
+                                <option value="c"> C </option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opción A:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_a"required placeholder="B" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opción B:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_b" required placeholder="C" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Opción C:</label>
+                <div class="control">
+                    <input class="input" type="text" id="respuesta_c" required placeholder="D" />
+                </div>
+            </div>
+
+            <div class="notification is-warning is-light" id="mensaje_completar_datos">
+                Por favor, ingrese todos los datos.
+            </div>
+            <button class="button is-primary" id="boton_envio">Guardar pregunta</button>
+        </div>
+    </div>
+
+    <script>
+
+  const tablaPreguntas = document.getElementById("tabla_preguntas");
+  const caja = document.querySelector(".box");
+  const mensaje = document.getElementById("mensaje_completar_datos");
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const cajaInicio = document.querySelector(".card");
+  let preguntaId = null;
+  const preguntaInput = document.getElementById("pregunta");
+  const categoriaSelect = document.getElementById("selector_categoria").querySelector("select");
+  const dificultadSelect = document.getElementById("selector_dificultad").querySelector("select");
+  const respuestaCorrectaSelect = document.getElementById("respuesta_correcta").querySelector("select");
+  const respuestaAInput = document.getElementById("respuesta_a");
+  const respuestaBInput = document.getElementById("respuesta_b");
+  const respuestaCInput = document.getElementById("respuesta_c");
+  const secret = "echo_boca";
+  const token = localStorage.getItem("token");
+  if (!usuario || !token) {
+	  // Redirige al login si falta algo 
+	  alert("No has iniciado sesion")
+	  window.location.href = "../login-regis/index.html";
+  } else {
+	  const expectedToken = btoa(usuario.usuario + ":" + secret);
+	  console.log(expectedToken)
+	  if (token !== expectedToken) {
+		  // Token inválido, redirige al login
+		  alert("No has iniciado sesion")
+		  window.location.href = "../login-regis/index.html";
+	  }
+  }
+
+  caja.style.display = "none";
+  mensaje.style.display = "none";
+
+  async function cargarPreguntas() {
+    const res = await fetch(`http://localhost:3030/preguntas/${usuario.id}`);
+    const todas = await res.json();
+
+    console.log("Preguntas cargadas:", todas);
+
+    todas.forEach(p => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.pregunta}</td>
+        <td>
+          <button class="button is-small is-primary boton_editar" data-id="${p.id}">Editar</button>
+          <button class="button is-small is-danger boton_eliminar" data-id="${p.id}">Eliminar</button>
+        </td>`;
+      tablaPreguntas.appendChild(tr);
+    });
+  };
+
+    cargarPreguntas();
+
+    tablaPreguntas.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("boton_editar")) {
+            const id = e.target.getAttribute("data-id");
+            preguntaId = id;
+
+            console.log("ID de la pregunta a editar:", preguntaId);
+
+            const res = await fetch(`http://localhost:3030/api/preguntas/${id}`);
+            const pregunta = await res.json();
+
+            caja.style.display = "block";
+            mensaje.style.display = "none";
+            cajaInicio.style.display = "none";
+        } 
+    });
+
+    document.getElementById("boton_envio").addEventListener("click", async function() {
+        if (!preguntaInput.value || categoriaSelect.value === "Categoria" || dificultadSelect.value === "Dificultad" || respuestaCorrectaSelect.value === "Opciones" || !respuestaCorrectaSelect.value || !respuestaAInput.value || !respuestaBInput.value || !respuestaCInput.value) {
+            mensaje.style.display = "block";
+            setTimeout(() => {
+                mensaje.style.display = "none";
+                console.log("Por favor, complete todos los campos.");
+            }, 3000);
+            return;
+        }
+
+        let puntos = 0;
+        if (dificultadSelect.value === "Facil") {
+            puntos = 10;
+        } else if (dificultadSelect.value === "Intermedio") {
+            puntos = 20;
+        } else {
+            puntos = 30;
+        }
+
+        try {
+        const response = await fetch(`http://localhost:3030/api/preguntas/${preguntaId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                pregunta: preguntaInput.value,
+                categoria: categoriaSelect.value,
+                dificultad: dificultadSelect.value,
+                puntos: puntos,
+                respuesta_correcta: respuestaCorrectaSelect.value,
+                respuesta_a: respuestaAInput.value,
+                respuesta_b: respuestaBInput.value,
+                respuesta_c: respuestaCInput.value
+            })
+        });
+        if (!response.ok) {
+            throw new Error("Error al actualizar la pregunta");
+        }
+        alert("Pregunta actualizada con éxito");
+        window.location.reload();
+    } catch (error) {
+        console.error("Error al actualizar la pregunta:", error);
+    }
+    });
+
+    tablaPreguntas.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("boton_eliminar")) {
+            const id = e.target.getAttribute("data-id");
+            const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta pregunta?");
+            if (confirmacion) {
+                try {
+                    const response = await fetch(`http://localhost:3030/api/preguntas/${id}`, {
+                        method: "DELETE"
+                    });
+                    if (!response.ok) {
+                        throw new Error("Error al eliminar la pregunta");
+                    }
+                    alert("Pregunta eliminada con éxito");
+                    window.location.reload();
+                } catch (error) {
+                    console.error("Error al eliminar la pregunta:", error);
+                }
+            }
+        }
+    });
+</script>

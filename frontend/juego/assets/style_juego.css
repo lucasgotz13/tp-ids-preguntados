@@ -1,0 +1,112 @@
+:root {
+    --primary-color: #f1f5f7;
+    --secondary-color: #2ecc71;
+    --tertiary-color: #153046;
+    --text-color: #333;
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: url(city_trivia.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
+}
+
+.container {
+    width: 100%;
+    padding: 20px;
+}
+
+#juego {
+    width: 100%;
+}
+
+header {
+    background: var(--tertiary-color);
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 50px;
+    box-shadow: #2c5a70 0 5px 10px;
+    color: rgb(247, 244, 241);
+    
+}
+
+header .puntos_partida {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 25px;
+}
+
+.t_pregunta {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    background-color: #153046;
+    width: 80%;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 20px;
+    margin: 5px auto;
+    box-shadow: #020303 0 2px 10px;
+}
+
+.field {
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #0a1428, #62cbd8);
+    box-shadow: #2c5a70 0 2px 10px;
+    height: 510px;
+    width: 50%;
+}
+
+.field .control {
+    text-align: center;
+    padding: 5px;
+}
+
+.field button {
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--text-color);
+    padding: 20px;
+    width: 85%;
+    font-size: 20px;
+    border-radius: 10px;
+    background: white;
+    border: none;
+    box-shadow: #2c5a70 0 2px 10px;
+}
+
+.field button:hover {
+    background: #81e3f0;
+    cursor: pointer;
+}
+
+.field button:active {
+    background: #2ecc71;
+    box-shadow: none;
+}
+
+.correcta {
+    background: lime !important;
+}
+
+.incorrecta {
+    background: red !important;
+}
+
+.deshabilitar {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+

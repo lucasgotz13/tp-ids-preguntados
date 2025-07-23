@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/style_menu.css">
+    <!--este link es para el simbolo de ig-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class = "container" id="fondo">
+        <!--empieza encabezado de bulma-->
+        <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+
+            <div id="div_logo">
+                <figure style="text-align:center;">
+                    <img id="imagen_logo" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Perfil de usuario">
+                </figure>
+            </div>
+            <div class="navbar-brand">
+                <a class="navbar-item" href="../login-regis/index.html">
+                    <h1 class="title is-4" id="quiz">Quiz City</h1>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="../crear_preg/index.html">
+                        Crear Pregunta
+                    </a>
+                    <a class="navbar-item" href="../editar-preg/index.html">
+                        Editar/borrar Pregunta
+                    </a> 
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Usuario
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" id="cerrar_sesion">
+                                Cerrar Sesión
+                            </a>
+                            <a class="navbar-item" onclick="obtenerDatos()">
+                                Editar usuario
+                            </a>
+                            <a class="navbar-item" id="eliminar_usuario">
+                                Eliminar usuario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-info" href="https://www.instagram.com/city_quiz_official/" target="_blank">
+                                <span class="icon">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </span>
+                                <span>Nuestras redes</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--fin encabezado de bulma-->
+        <div class="container">
+            <figure class="image" id="menu_img">
+                <img src="../menu/assets/menu.jpg" />
+            </figure>
+        </div>
+
+        <div class="container">
+            <div class="notification is-info">
+                <strong>Elegi una categoria:</strong> 
+            </div>
+        </div>
+
+        <!--tarjetas categoria con bulma-->
+        <div class="columns is-multiline is-centered"> 
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="deportes" onclick= "location.href='/juego/index.html?categoria=Deportes'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/deporte.jpg" >
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Deportes</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="mundi" onclick= "location.href='/juego/index.html?categoria=Mundi'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/mundi.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Mundi</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="cine" onclick= "location.href='/juego/index.html?categoria=Cine'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/cine.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">Cine</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="column is-one-quarter-desktop ">
+                <div class="card clickable-card" id="megamix" onclick= "location.href='/juego/index.html'">
+                    <div class="card-image">
+                        <figure class="imagen">
+                            <img src="../menu/assets/megamix.jpg">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        <p class="title is-5">MegaMix</p>
+                    </div>
+                    </div>
+            </div>
+    </div>
+
+    <script> 
+    // Permite que el usuario no pueda volver hacia atras con el cache y acceder al menu sin estar logeado
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+    const secret = "echo_boca";
+    const token = localStorage.getItem("token");
+    if (!usuarioGuardado || !token) {
+        // Redirige al login si falta algo 
+        alert("No has iniciado sesion")
+        window.location.href = "../login-regis/index.html";
+    } else {
+        const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
+        console.log(expectedToken)
+        if (token !== expectedToken) {
+            // Token inválido, redirige al login
+            alert("No has iniciado sesion")
+            window.location.href = "../login-regis/index.html";
+        }
+    }
+
+    // Si el usuario tiene foto de perfil, la usa.
+       
+        const urlFoto = usuarioGuardado.url_perfil 
+
+        if(urlFoto && urlFoto !== ""){
+            document.getElementById("imagen_logo").src = urlFoto;
+        } 
+
+    document.getElementById("eliminar_usuario").addEventListener("click", async function(){
+
+        const confirmar = confirm("¿Estás seguro que deseas eliminar el usuario?");
+        if (!confirmar) return;
+
+        // 1. Obtener usuario del localStorage
+        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+        if(!usuarioGuardado || !usuarioGuardado.usuario){
+            alert("No se encontró el usuario para eliminar");
+            return;
+        }
+
+        //2.enviar peticion de delete
+        try {
+            const response= await fetch(`http://localhost:3030/api/usuarios/${encodeURIComponent(usuarioGuardado.id)}`,{
+                method:"DELETE"
+            });
+
+            if(response.ok){
+                localStorage.removeItem("usuario");
+                alert("Usuario eliminado correctamente");
+                window.location.href= "../login-regis/index.html"
+
+            }else{
+                alert("No se pudo eliminar el usuario");
+            }
+
+        }catch(error){
+            alert("Error al eliminar el usuario");
+            console.error(error);
+        }
+        });
+
+    // Cerrar la sesion
+    document.getElementById("cerrar_sesion").addEventListener("click", async function() {
+        // const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("token");
+
+        window.location.href = "../login-regis/index.html"
+    })
+
+
+    function obtenerDatos() {
+        window.location.href=`../editar_usuario/index.html?usuario=${usuarioGuardado.usuario}&nombre=${usuarioGuardado.nombre}&edad=${usuarioGuardado.edad}&url_perfil=${usuarioGuardado.url_perfil}`     
+    }
+
+    </script>
+
+
+
+</body>
+</html>
