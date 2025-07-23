@@ -179,6 +179,7 @@
                 if (response.ok){
                     alert("¡Pregunta guardada con éxito!");
                     document.querySelector("form")?.reset();
+                    window.location.href = "../menu/index.html"
                 }else{
                     alert("No se pudo guardar la pregunta");
                 }
