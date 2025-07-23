@@ -44,6 +44,20 @@ body{
     color: var(--background-color);
     font-size: 40px;
 }
+#imagen_usuario{
+    display:block; 
+    margin: 0 auto;
+    border-radius:50%;
+    width:110px; 
+    height:110px; 
+    object-fit:cover;
+    transition: transform 0.2s ease;
+}
+#imagen-logo:hover {
+    transform: scale(1.08);
+}
+
+
 
 .formulario h1 {
     text-align: center; 

@@ -106,12 +106,21 @@
 
     <script>
         const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"))
-        setTimeout(() => {
-            if (usuarioGuardado == null) {
-                alert("No has iniciado sesion")
-                window.location.href = "../login-regis/index.html"
-            }
-        }, 200)
+        const secret = "echo_boca";
+		const token = localStorage.getItem("token");
+		if (!usuarioGuardado || !token) {
+			// Redirige al login si falta algo 
+			alert("No has iniciado sesion")
+			window.location.href = "../login-regis/index.html";
+		} else {
+			const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
+			console.log(expectedToken)
+			if (token !== expectedToken) {
+				// Token inválido, redirige al login
+				alert("No has iniciado sesion")
+				window.location.href = "../login-regis/index.html";
+			}
+        }	  
         const mensaje=document.getElementById("mensaje_completar_datos");
         mensaje.style.display="none";
 

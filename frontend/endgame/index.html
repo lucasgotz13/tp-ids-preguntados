@@ -57,14 +57,26 @@
 
 			const params = new URLSearchParams(window.location.search)
 			const puntos = params.get("puntos")
+			if (puntos == null) {
+				window.location.href = "../login-regis/index.html"
+			}
 
             const usuarioGuardado = JSON.parse(localStorage.getItem("usuario")); 
-				setTimeout(() => {
-					if (usuarioGuardado == null) {
-						alert("No has iniciado sesion");
-						window.location.href = "../login-regis/index.html";
-					}
-				}, 200);
+			const secret = "echo_boca";
+			const token = localStorage.getItem("token");
+			if (!usuarioGuardado || !token) {
+				// Redirige al login si falta algo 
+				alert("No has iniciado sesion")
+				window.location.href = "../login-regis/index.html";
+			} else {
+				const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
+				console.log(expectedToken)
+				if (token !== expectedToken) {
+					// Token inválido, redirige al login
+					alert("No has iniciado sesion")
+					window.location.href = "../login-regis/index.html";
+				}
+			}
 			elemPuntos.innerHTML = `Puntos: <strong>${puntos}</strong>`
 
 			async function getUsuario(id) {

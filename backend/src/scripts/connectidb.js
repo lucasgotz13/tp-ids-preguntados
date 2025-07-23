@@ -174,7 +174,7 @@ async function createUsuario(
     try {
         dbClient.query(
             "INSERT INTO usuarios (nombre, usuario, edad, url_perfil, mejor_puntaje) VALUES ($1, $2, $3, $4, $5)",
-            [nombre, usuario, edad, url_perfil ?? "", mejor_puntaje ?? 0]
+            [nombre, usuario, edad, url_perfil, mejor_puntaje ?? 0]
         );
         return true;
     } catch (e) {

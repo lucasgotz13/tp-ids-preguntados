@@ -91,7 +91,7 @@
         <!--tarjetas categoria con bulma-->
         <div class="columns is-multiline is-centered"> 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="deportes" onclick= "location.href='/frontend/juego/index.html?categoria=Deportes'">
+                <div class="card clickable-card" id="deportes" onclick= "location.href='/juego/index.html?categoria=Deportes'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/deporte.jpg" >
@@ -104,7 +104,7 @@
             </div>
 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="mundi" onclick= "location.href='/frontend/juego/index.html?categoria=Mundi'">
+                <div class="card clickable-card" id="mundi" onclick= "location.href='/juego/index.html?categoria=Mundi'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/mundi.jpg">
@@ -117,7 +117,7 @@
             </div>
 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="cine" onclick= "location.href='/frontend/juego/index.html?categoria=Cine'">
+                <div class="card clickable-card" id="cine" onclick= "location.href='/juego/index.html?categoria=Cine'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/cine.jpg">
@@ -130,7 +130,7 @@
             </div>
 
             <div class="column is-one-quarter-desktop ">
-                <div class="card clickable-card" id="megamix" onclick= "location.href='/frontend/juego/index.html'">
+                <div class="card clickable-card" id="megamix" onclick= "location.href='/juego/index.html'">
                     <div class="card-image">
                         <figure class="imagen">
                             <img src="../menu/assets/megamix.jpg">
@@ -143,16 +143,29 @@
             </div>
     </div>
 
-    <script>
-
-    // Timeout para que espere un poquito antes de correr este codigo 
-    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-    setTimeout(function() {
-        if(usuarioGuardado == null){
-            alert("No has iniciado sesion");
-            window.location.href = "../login-regis/index.html"
+    <script> 
+    // Permite que el usuario no pueda volver hacia atras con el cache y acceder al menu sin estar logeado
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            window.location.reload();
         }
-    }, 200);
+    });
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+    const secret = "echo_boca";
+    const token = localStorage.getItem("token");
+    if (!usuarioGuardado || !token) {
+        // Redirige al login si falta algo 
+        alert("No has iniciado sesion")
+        window.location.href = "../login-regis/index.html";
+    } else {
+        const expectedToken = btoa(usuarioGuardado.usuario + ":" + secret);
+        console.log(expectedToken)
+        if (token !== expectedToken) {
+            // Token inválido, redirige al login
+            alert("No has iniciado sesion")
+            window.location.href = "../login-regis/index.html";
+        }
+    }
 
     // Si el usuario tiene foto de perfil, la usa.
        
@@ -197,9 +210,10 @@
 
     // Cerrar la sesion
     document.getElementById("cerrar_sesion").addEventListener("click", async function() {
-        const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+        // const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
 
         localStorage.removeItem("usuario");
+        localStorage.removeItem("token");
 
         window.location.href = "../login-regis/index.html"
     })
