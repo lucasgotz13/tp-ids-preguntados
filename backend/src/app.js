@@ -63,7 +63,7 @@ app.get("/preguntas/:id",async(req,res)=>{
 app.get("/api/usuarios/:usuario",async (req,res) => {
 
     const response= await getOneUserByUsuario(req.params.usuario);
-    
+
     if (response.length == 0){
         return res.status(404).json({
             status: false,
@@ -77,7 +77,7 @@ app.get("/api/usuarios/:usuario",async (req,res) => {
 app.get("/api/usuarios/id/:id",async (req,res) => {
 
     const response= await getOneUser(req.params.id);
-    
+
     if (response.length == 0){
         return res.status(404).json({
             status: false,
@@ -91,7 +91,7 @@ app.get("/api/usuarios/id/:id",async (req,res) => {
 app.get("/api/usuarios/id/:id",async (req,res) => {
 
     const response= await getOneUser(req.params.id);
-    
+
     if (response.length == 0){
         return res.status(404).json({
             status: false,
@@ -114,13 +114,6 @@ app.get("/api/preguntas/:id", async (req, res) => {
 
     return res.status(200).json(response);
 });
-
-/*curl --header "Content-Type: application/json" \
-  --request POST \ 
-  --data '{"pregunta":"¿Quién fue el último campeon del mundo de fútbol?","dificultad":"facil", 
-  "categoria" : "deportes", "puntos": "10", "respuesta_a": "Brasil", "respuesta_b": "Argentina", "respuesta_c": "Francia", "respuesta_correcta": "b"
-  ' \ 
-  http://localhost:3030/api/preguntas/  */
 
 // Crear una pregunta y la respuesta
 app.post("/api/preguntas/", async (req, res) => {
@@ -231,47 +224,6 @@ app.put("/api/respuestas/:id", async (req, res) => {
     })
 })
 
-/*curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"id_pregunta":"1","respuesta_a":"Manuel Bilbao", "respuesta_b":"Nico Riedel",
-  "respuesta_c" : "La peke", "respuesta_correcta": "Manuel Camejo"}' \
-  http://localhost:3030/api/respuestas/  */
-
-// Modificar la pregunta
-/*app.put("/api/preguntas/:id", async (req, res) => {
-    if (
-        req.body.pregunta == null ||
-        req.body.dificultad == null ||
-        req.body.categoria == null ||
-        req.body.puntos == null
-    ) {
-        return res.status(400).json({
-            status: false,
-            mensaje: "Faltan datos para modificar la pregunta",
-        });
-    }
-
-    try {
-        await updatePregunta(
-            req.params.id,
-            req.body.pregunta,
-            req.body.dificultad,
-            req.body.categoria,
-            req.body.puntos
-        );
-
-        return res.status(200).json({
-            status: true,
-            mensaje: "Pregunta modificada exitosamente",
-        });
-    } catch {
-        return res.status(400).json({
-            status: false,
-            mensaje: "No se pudo modificar la pregunta",
-        });
-    }
-});*/
-
 // Borrar la pregunta
 app.delete("/api/preguntas/:id", async (req, res) => {
     if (req.params.id == null) {
@@ -371,7 +323,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
             .status(400)
             .json({ status: false, mensaje: "Faltan datos para el usuario" });
     }
-    
+
     // comprobar edad valida
        if (edad < 0 || edad > 100) return res.status(400).json({
         status: false,
@@ -438,10 +390,10 @@ app.put("/api/usuarios/:id", async (req, res) => {
 
 
         }
-    
-    
-    
-    
+
+
+
+
 });
 
 // Borrar un usuario

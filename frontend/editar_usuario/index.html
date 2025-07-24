@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    
+
     <div class="container" id="fondo">
         <a class="button is-dark is-small" id="boton" href="../menu/index.html">
             <span class="icon">
@@ -48,7 +48,7 @@
             </form>
         </div>
     </div>
-    
+
     <script>
         const params = new URLSearchParams(window.location.search)
         const usuario = params.get("usuario")
@@ -63,7 +63,7 @@
         const secret = "echo_boca";
 		const token = localStorage.getItem("token");
 		if (!usuarioGuardado || !token) {
-			// Redirige al login si falta algo 
+			// Redirige al login si falta algo
 			alert("No has iniciado sesion")
 			window.location.href = "../login-regis/index.html";
 		} else {
@@ -74,30 +74,29 @@
 				alert("No has iniciado sesion")
 				window.location.href = "../login-regis/index.html";
 			}
-        }	 
+        }
 
-        // Si usuarioGuardado es un array, usa [0], si es un objeto, accede directo
         const urlFoto = usuarioGuardado.url_perfil;
 
         if(urlFoto && urlFoto !== ""){
             document.getElementById("imagen_usuario").src = urlFoto;
-        } 
-        
+        }
+
 
 
         document.getElementById("form_regis").addEventListener("submit", async (e)=>{
             e.preventDefault();
 
-            
+
             const usuario=document.getElementById("usuario_regis").value.trim();
             const nombre=document.getElementById("nombre_regis").value.trim();
             const edad=parseInt(document.getElementById("edad_regis").value);
             const fotoInput=document.getElementById("foto_regis").value.trim();
-            const id = usuarioGuardado.id;  
+            const id = usuarioGuardado.id;
             const mejor_puntaje = usuarioGuardado.mejor_puntaje;
 
 
-            
+
             const divError_usuario=document.getElementById("mensaje_error_usuario");
             const divError_edad=document.getElementById("mensaje_error_edad");
 
@@ -117,8 +116,8 @@
                     foto=usuarioGuardado.url_perfil || "";
                 }
             }
-            
-                
+
+
 
 
             try {
@@ -147,7 +146,7 @@
                         divError_usuario.textContent = errorData.mensajeUsuario;
                         divError_usuario.style.display = "block";
                     }
-    
+
                     return;
                 }
 
@@ -161,7 +160,7 @@
 
             }catch(error){
                 console.error("Error:", error);
-                
+
             }
         })
     </script>

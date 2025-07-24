@@ -61,9 +61,6 @@
 
             <div class="field">
                 <label class="label">Opción Correcta</label>
-                <!-- <div class="control">
-                    <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
-                </div> -->
                 <div class="field has-addions" >
                     <div class="control">
                         <span class="select" id="respuesta_correcta">
@@ -111,7 +108,7 @@
         const secret = "echo_boca";
 		const token = localStorage.getItem("token");
 		if (!usuarioGuardado || !token) {
-			// Redirige al login si falta algo 
+			// Redirige al login si falta algo
 			alert("No has iniciado sesion")
 			window.location.href = "../login-regis/index.html";
 		} else {
@@ -122,7 +119,7 @@
 				alert("No has iniciado sesion")
 				window.location.href = "../login-regis/index.html";
 			}
-        }	  
+        }
         const mensaje=document.getElementById("mensaje_completar_datos");
         mensaje.style.display="none";
 
@@ -144,7 +141,7 @@
 
 
         let puntos= 0;
-        
+
         if(dificultad === "Facil"){
             puntos=10;
         }
@@ -183,7 +180,7 @@
                 }else{
                     alert("No se pudo guardar la pregunta");
                 }
-               
+
             }catch(error){
                 alert("error al guardar la pregunta");
                 console.error(error);
