@@ -115,7 +115,7 @@ Levantar cors para frontend:
 ### 3. Ingresar a un navegador web
 En tu navegador de preferencia pegar la siguiente URL:  
 http://localhost:8080/login-regis/index.html \
-![Navegador:](/img_readme/localhost8080.jpg)
+![Navegador:](/img_readme/localhost8080regis.jpg)
 
 ### LISTO! 🎉
 Ya tenes corriendo tu juego con el API REST, Base de datos y frontend. 
