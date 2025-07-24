@@ -19,6 +19,18 @@ body{
 #fondo{
     width: 100%;
 }
+#boton_regis{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 
 .bienvenida {
     margin-left: auto;  
