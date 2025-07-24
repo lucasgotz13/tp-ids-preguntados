@@ -3,17 +3,23 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
-        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
         <link rel="stylesheet" href="assets/style_juego.css" />
         <title>Trivia</title>
     </head>
     <body>
         <audio id="backgroundMusic" src="musica_fondo.mp3" preload="auto" loop></audio>
-        
-        <div class="container" id="nav_juego">
+
+        <div class="container" id="juego">
+
+            <a class="button is-dark is-small" id="boton_menu" href="../menu/index.html">
+                <span class="icon">
+                    <i class="fas fa-home"></i>
+                </span>
+                <span>MENU</span>
+            </a>
+
             <div class="container">
                 <header>
                     <div class="puntos_partida">
@@ -40,7 +46,7 @@
                     <button class="button is-rounded" id="opcion_c" value="c"></button>
                 </div>
                 <div class="control">
-                    <button class="button is-rounded" id="siguiente_pregunta">Siguiente pregunta</button>
+                    <button class="button is-rounded  " id="siguiente_pregunta">Siguiente pregunta</button>
                 </div>
             </div>
         </div>

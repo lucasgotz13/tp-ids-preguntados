@@ -78,9 +78,6 @@
 
             <div class="field">
                 <label class="label">Opción Correcta</label>
-                <!-- <div class="control">
-                    <input class="input" type="text" id="respuesta_correcta" required placeholder="Opcion Correcta" />
-                </div> -->
                 <div class="field has-addions" >
                     <div class="control">
                         <span class="select" id="respuesta_correcta">
@@ -231,9 +228,10 @@
         });
         if (!response.ok) {
             throw new Error("Error al actualizar la pregunta");
+        }else{
+            alert("Pregunta actualizada con éxito");
+            window.location.reload();
         }
-        alert("Pregunta actualizada con éxito");
-        window.location.reload();
     } catch (error) {
         console.error("Error al actualizar la pregunta:", error);
     }
@@ -250,9 +248,10 @@
                     });
                     if (!response.ok) {
                         throw new Error("Error al eliminar la pregunta");
+                    }else{
+                        alert("Pregunta eliminada con éxito");
+                        window.location.reload();
                     }
-                    alert("Pregunta eliminada con éxito");
-                    window.location.reload();
                 } catch (error) {
                     console.error("Error al eliminar la pregunta:", error);
                 }
