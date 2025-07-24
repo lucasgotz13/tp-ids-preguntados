@@ -10,7 +10,7 @@
 
 <body>
     <div class="container" id="fondo">
-            <a class="button is-dark is-small" id="boton_regis" href="../login-regis/index.html">
+            <a class="button is-dark is-small" id="boton_regis" href="../index.html">
                 <span class="icon">
                     <i class="bi bi-arrow-left"></i>
                 </span>
@@ -38,7 +38,7 @@
                 <div class="campos">
                     <input type="text" id="nombre_regis" required placeholder="nombre">
                 </div>
-                
+
                 <div class="campos">
                     <input type="number" id="edad_regis" required placeholder="edad">
                 </div>
@@ -51,11 +51,11 @@
                 <div class="boton">
                     <button type="submit">Confirmar</button>
                 </div>
-                
+
             </form>
         </div>
     </div>
-    
+
     <script>
         document.getElementById("form_regis").addEventListener("submit", async (e)=>{
             e.preventDefault();
@@ -67,7 +67,7 @@
 
             const divError_usuario=document.getElementById("mensaje_error_usuario");
             const divError_edad=document.getElementById("mensaje_error_edad");
-            
+
 
             if(!nombre || !usuario || !edad){
                 alert("Complete los campos")
@@ -108,7 +108,7 @@
                         divError_usuario.style.display = "block";
                     }
                     return;
-                        
+
                 }
 
 
