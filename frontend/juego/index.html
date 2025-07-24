@@ -112,13 +112,13 @@
                     tryPlayMusic();
 
                     if (categoria == null) {
-                        const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5).slice(0,14)
+                        const preguntasRandomizadas = preguntas.sort(() => Math.random() - 0.5).slice(0,15)
                         return preguntasRandomizadas;
                     }
                     const preguntasFiltradas = preguntas
                         .filter((pregunta) => pregunta.categoria === categoria)
                         .sort(() => Math.random() - 0.5)
-                        .slice(0,4)
+                        .slice(0,5)
                     return preguntasFiltradas;
                 } catch (e) {
                     console.error("Error al encontrar las preguntas", e); // Cambiado 'error' a 'e' para coincidir con el catch
