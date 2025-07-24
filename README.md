@@ -136,7 +136,7 @@ https://tp-ids-preguntados.onrender.com/menu/index.html
 
 - Editar/borrar tu usuario. Selecionando "usuario" se te desplegarà el menu para que puedas realizar estas acciones. 
 
-- Elegir tu desafio: Podras elegir entre nuestras 4 tarjetas la categoria con la que queres jugar. Tener en cuenta que en las categorias deporte, cine y mundi se jugara con 5 preguntas por ronda y en la categoria especial megamix de jugara con 15, esta ultima puede contener preguntas de las otras categorias o algunas con diversas temàticas.
+- Elegir tu desafio: Podras elegir entre nuestras 4 tarjetas la categoria con la que queres jugar. Tener en cuenta que en las categorias deporte, cine y mundi se jugara con 5 preguntas por ronda y en la categoria especial megamix se jugara con 15, esta ultima puede contener preguntas de las otras categorias o algunas con diversas temàticas.
 
 - Jugar: Selecciona la opcion que creas correcta y luego clickea el boton de "siguiente pregunta". Si tu respuesta fue correcta se te sumaran los puntos dependiendo la dificultad de la pregunta. \
 Dificultad: \
