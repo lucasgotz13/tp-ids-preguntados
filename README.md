@@ -34,7 +34,7 @@ Repositorio oficial de City Quiz. Este es un juego con fines de entretenimiento 
 
 Antes de empezar, asegúrate de tener instalado lo siguiente:
 
-* **Git:** Para clonar el repositorio.
+* **Git** Para clonar el repositorio.
 * **Dispositivo Unix-Like** para poder ejecutar los comandos .
 * **Docker** para poder levantar los conenedores.
 
@@ -131,19 +131,19 @@ https://tp-ids-preguntados.onrender.com/menu/index.html
 1. Ingresar o Registrarse en el juego, esto dependiendo de si ya tenes una cuenta creada. 
 2. ¡Jugar! Podes:
 - Crear preguntas: En la parte superior clickeas en "crear pregunta" y luego completas los campos.
-// captura
+
 - Editar tus preguntas: Si ya creaste previamente una pregunta podras editarla para cambiar su contenido o borrarla.
-//captura 
+
 - Editar/borrar tu usuario. Selecionando "usuario" se te desplegarà el menu para que puedas realizar estas acciones. 
-//capturas
+
 - Elegir tu desafio: Podras elegir entre nuestras 4 tarjetas la categoria con la que queres jugar.
-// captura 
+
 - Jugar: Selecciona la opcion que creas correcta y luego clickea el boton de "siguiente pregunta". Si tu respuesta fue correcta se te sumaran los puntos dependiendo la dificultad de la pregunta. \
 Dificultad: \
 -Facil: 10 puntos \
 -Medio: 20puntos \
--Dificil: 30 puntos \
-//captura juego
+-Dificil: 30 puntos 
+
 - Fin del Juego: Al finalizar el juego se te mostrara la puntuacion obtenida en la partida y tu mejor puntaje registrado. Ademas podras ver el ranking de todos los usuarios.
 
 ---
