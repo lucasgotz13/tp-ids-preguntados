@@ -37,11 +37,11 @@ header {
     
 }
 #siguiente_pregunta {
-    background-color: #1e0b74; /* Un naranja vibrante, por ejemplo */
-    color: white; /* Texto blanco para contrastar */
-    border: 2px solid #081c42; /* Un borde sutil */
-    font-size: 22px; /* Un poco más grande si quieres */
-    padding: 15px 30px; /* Más padding para que sea más grande */
+    background-color: #1e0b74; 
+    color: white; 
+    border: 2px solid #081c42; 
+    font-size: 22px; 
+    padding: 15px 30px; 
 }
 
 header .puntos_partida {
