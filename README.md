@@ -50,6 +50,15 @@ En tu terminal copiar el siguiente comando:
 git clone [https://github.com/lucasgotz13/tp-ids-preguntados]
 cd tp-ids-preguntados
 ```
+### 2. Agregar variables de entorno
+```env
+DB_HOST=variable_host
+DB_USER=variable_user
+DB_PASSWORD=variable_password
+DB_NAME=variable_nombre
+DB_PORT=variable_puerto
+```
+
 ### 2. Levantar los contenedores
 En tu terminal copiar los siguientes comandos dependiendo la opcion elegida: \
 **Opcion 1.**
